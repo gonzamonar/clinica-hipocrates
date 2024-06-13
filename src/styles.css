@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+:root {
+    --pantone-violet: #823f8e; /* 6083 C */
+    --pantone-orange: #e25700; /* 6020 C */
+    --pantone-cream: #f0b184; /* 6015 C */
+    --pantone-lightgreen: #d1e076; /* 6192 C */
+    --pantone-pink: #fc83ae; /* 6051 C */
+    --pantone-oldpink: #f18695; /* 6044 C */
+
+    --primary: var(--pantone-pink);
+    --secondary: var(--pantone-lightgreen);
+    --accent: var(--pantone-orange);
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexrow {
+    display: flex;
+    flex-direction: row;
+}
+

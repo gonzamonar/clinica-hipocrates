@@ -1,0 +1,20 @@
+
+<form [formGroup]="form" (ngSubmit)="OnFormSubmitted()">
+    <div class="row g-3" [style.margin-top.px]="5">    
+        <app-form-data-usuario [formGroup]="form"></app-form-data-usuario>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Especialidad</mat-label>
+            <input matInput type="text" class="form-control" formControlName="especialidad">
+            @if (controlHasErrors('especialidad')) {
+                <mat-error>{{ getControlErrorMessage('especialidad') }}</mat-error>
+            }
+        </mat-form-field>
+    </div>
+
+    <hr class="my-4"/>
+
+    <div class="flex">
+        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid">Registrarse</button>
+    </div>
+</form>
