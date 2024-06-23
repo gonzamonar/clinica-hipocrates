@@ -1,0 +1,13 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
+    <h2>Estadísticas de la Clínica</h2>
+    <h3>Total de Turnos: {{ turnos ? turnos.length : 0 }}</h3>
+    <h3>Turnos por Especialidad</h3>
+    <p *ngFor="let especialidad of especialidades">{{especialidad}}: {{ cantidadTurnosEspecialidades(especialidad) }}</p>
+    <h3>Turnos por Día</h3>
+    <p *ngFor="let dia of dias">{{dia}}: {{ cantidadTurnosDias(dia) }}</p>
+    <h3>Turnos Solicitados por Médico</h3>
+    <p *ngFor="let especialista of especialistas">{{especialista.fullName()}}: {{ cantidadTurnosSolicitadosEspecialistas(especialista.email) }}</p>
+    <h3>Turnos Finalizados por Médico</h3>
+    <p *ngFor="let especialista of especialistas">{{especialista.fullName()}}: {{ cantidadTurnosFinalizadosEspecialistas(especialista.email) }}</p>
+</div>

@@ -1,0 +1,52 @@
+
+<div class="card-container flexrow centered">
+    <div class="card-turno flex">
+        <div class="card-header flexrow">
+            <p [matTooltip]="'Número de turno'">Nº {{ turno.nro_turno }}</p>
+            <p [matTooltip]="'Fecha del turno'">{{ turno.dia }}</p>
+            <p [matTooltip]="'Hora del turno'">{{ turno.hora }}</p>
+            <p [matTooltip]="displayTooltipCalificacion(turno.calificacion)">{{ turno.calificacion | renderNullStringField }} <fa-icon [icon]="iconStar"></fa-icon></p>
+        </div>
+        <div class="card-body flexrow">
+            <div class="flex">
+                <img class="logo" src="../../../assets/img/navbar/logo.png" alt="">
+            </div>
+            <div class="flex">
+                <p>Paciente: {{ nombrePaciente != '' ? nombrePaciente : turno.paciente }}</p>
+                <p>Especialista: {{ nombreEspecialista != '' ? nombreEspecialista : turno.especialista }}</p>
+                <p>Especialidad: {{ turno.especialidad }}</p>
+            </div>
+        </div>
+
+        <hr [style.margin]="'0px 0px'"/>
+
+        <div class="card-footer flexrow">
+            <div class="status flexrow"
+                [style.background-color]="getStatusBgColor(turno.estado)"
+                [matTooltip]="'Estado'">
+                <fa-icon [icon]="getStatusIcon(turno.estado)"></fa-icon>{{ turno.estado }}
+            </div>
+            <div [matTooltip]="displayTooltipComentario(turno.comentario)">
+                <button mat-fab extended color="white" [disabled]="turno.comentario == null" >
+                    <mat-icon>chat</mat-icon>comentario</button>
+            </div>
+            <div [matTooltip]="displayTooltipReview(turno.review)">
+                <button mat-fab extended color="white" [disabled]="turno.review == null">
+                    <mat-icon>reviews</mat-icon>reseña</button>
+            </div>
+            <div [matTooltip]="displayTooltipEncuesta(turno.nro_encuesta)">
+                <button mat-fab extended color="white" [disabled]="turno.nro_encuesta == null">
+                    <mat-icon>quiz</mat-icon>encuesta</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="btn-container flex">
+        <div><button (click)="actionAcceptBtn()" *ngIf="displayAcceptBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#3ca80e'">Aceptar Turno</button></div>
+        <div><button (click)="actionCancelBtn()" *ngIf="displayCancelBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#e63200'">Cancelar Turno</button></div>
+        <div><button (click)="actionRejectBtn()" *ngIf="displayRejectBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#a60000'">Rechazar Turno</button></div>
+        <div><button (click)="actionFinishBtn()" *ngIf="displayFinishBtn(turno)" mat-flat-button color="primary">Finalizar Turno</button></div>
+        <div><button (click)="actionCompleteQuizBtn()" *ngIf="displayCompleteQuizBtn(turno)" mat-flat-button color="primary">Completar Encuesta</button></div>
+        <div><button (click)="actionCalificationBtn()" *ngIf="displayCalificationBtn(turno)" mat-flat-button color="primary">Calificar Atención</button></div>
+    </div>
+</div>

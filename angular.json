@@ -4,6 +4,9 @@
   "newProjectRoot": "projects",
   "projects": {
     "clinica-hipocrates": {
+      "i18n": {
+        "sourceLocale": "es-AR"
+      },
       "projectType": "application",
       "schematics": {},
       "root": "",

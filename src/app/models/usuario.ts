@@ -16,7 +16,7 @@ export class Usuario {
         email: string,
         imagenPerfil: string,
         nivelUsuario: string
-        ) {
+    ) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
@@ -24,5 +24,9 @@ export class Usuario {
         this.email = email;
         this.imagenPerfil = imagenPerfil;
         this.nivelUsuario = nivelUsuario;
-        }
+    }
+
+    fullName(): string{
+        return this.nombre + " " + this.apellido;
+    }
 }

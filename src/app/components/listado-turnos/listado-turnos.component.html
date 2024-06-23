@@ -1,0 +1,12 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
+    <h2 [style.margin-bottom.px]="40">Listado de Turnos</h2>
+    <div class="cards-container flex">
+        <app-card-turno
+        *ngFor="let turno of turnos"
+        [turno]="turno"
+        [nombrePaciente]="displayNamePaciente(turno.paciente)"
+        [nombreEspecialista]="displayNameEspecialista(turno.especialista)"
+        ></app-card-turno>
+    </div>
+</div>

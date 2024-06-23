@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatButtonModule } from '@angular/material/button'
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { NotifierService } from '../../services/notifier.service';
 
 
 @Component({
@@ -20,34 +22,71 @@ import { MatButtonModule } from '@angular/material/button'
     MatInputModule,
     MatIconModule,
     MatSlideToggleModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule,
+    RouterOutlet
   ],
   templateUrl: './form-login.component.html',
   styleUrl: '../form-styles.css'
 })
 
 export class FormLoginComponent {
-  loginError: boolean = false;
   email: string = '';
   password: string = '';
   rememberLogin: boolean = false;
   hide: boolean = true;
+  loginError: boolean = false;
+  errorMessage: string = '';
+  verifyError: boolean = false;
+  sendingRequest: boolean = false;
 
   constructor(
     public login: LoginService,
-    public session: SessionService
+    public session: SessionService,
+    private router: Router,
+    private notifier: NotifierService
   ) { }
 
   async Login() {
-    this.loginError = false;
-    this.loginError = await this.login.signIn(this.email, this.password, this.rememberLogin);
+    if (!this.sendingRequest){
+      this.sendingRequest = true;
+      this.loginError = false;
+      this.verifyError = false;
+      this.errorMessage = '';
+  
+      this.login.signIn(this.email, this.password, this.rememberLogin)
+      .then((res) => {
+          this.loginError = res;
+          if (this.loginError){
+            this.errorMessage = "Usuario o contraseña incorrectos.";
+          } else {
+            if (!this.session.getCurrentUser().emailVerified){
+              this.verifyError = true;
+              this.login.signOut();
+            } else if (!this.session.isSessionAuthorized()) {
+              this.loginError = true;
+              this.errorMessage = "Un administrador debe habilitar su cuenta para ingresar.";
+              this.login.signOut();
+            } else {
+              this.quickAccess('', '');
+              this.notifier.popUpNotification('Bienvenido/a '+ this.session.data?.nombre);
+              this.router.navigate(['/']);
+            }
+          }
+        }
+      ).then(() => {
+        this.sendingRequest = false;
+      });
+    }
   }
 
   Logout() {
-    this.login.signOut();
+    this.login.requireSignOut();
   }
 
   quickAccess(email: string, pwd: string){
+    this.loginError = false;
+    this.verifyError = false;
     this.email = email;
     this.password = pwd;
   }

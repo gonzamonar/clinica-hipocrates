@@ -1,11 +1,15 @@
 
-<div class="container py-4">
-    <div class="row align-items-md-stretch">
-        <div class="col-md-6">
-            <app-form-login></app-form-login>
-        </div>
-        <div class="col-md-6">
-            <app-form-register></app-form-register>
-        </div>
+
+<div class="welcome-container flexrow">
+    <div class="presentation flex">
+        <h5>ESPECIALISTAS EN SALUD</h5>
+        <h2>Bienvenidos a</h2>
+        <h1>Clínica Hipócrates</h1>
+        <p>Somos una clínica multi-especialidad integrada por doctores y doctoras altamente calificados y la mejor tecnología médica de todo GBA Sur.</p>
+        <button mat-flat-button color="primary">
+            <fa-icon [icon]="iconTurno" [style.margin-right.px]="5"></fa-icon>
+            SACAR UN TURNO
+        </button>
     </div>
+    <img class="home-img" src="../../../assets/img/inicio/home-background.png" alt="La imagen muestra el símbolo de la medicina sobre fondo violeta.">
 </div>

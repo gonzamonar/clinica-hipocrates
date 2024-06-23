@@ -1,0 +1,13 @@
+
+<div class="container py-4">
+    <div class="row align-items-md-stretch">
+        <div>
+          <div class="h-100 p-5 rounded-3">
+            <mat-tab-group>
+              <mat-tab label="Listado de Usuarios"> <app-listado-usuarios *ngIf="session.isAdminLevelSession()"></app-listado-usuarios> </mat-tab>
+              <mat-tab label="Alta de Usuarios"> <app-formgroup-alta-usuarios *ngIf="session.isAdminLevelSession()"></app-formgroup-alta-usuarios> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+    </div>
+</div>

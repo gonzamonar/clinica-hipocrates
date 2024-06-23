@@ -1,7 +1,7 @@
 
 <form [formGroup]="form" (ngSubmit)="OnFormSubmitted()">
     <div class="row g-3" [style.margin-top.px]="5">    
-        <app-form-data-usuario [formGroup]="form"></app-form-data-usuario>
+        <app-form-data-usuario [formGroup]="form" (uploadFileEvent)="updateImagenPerfil($event)"></app-form-data-usuario>
 
         <mat-form-field appearance="outline">
             <mat-label>Obra Social</mat-label>
@@ -12,14 +12,16 @@
         </mat-form-field>
         
         <div class="mb-3" [style.margin]="'15px 0px'">
-            <label for="formFile" class="form-label" [style.color]="'#673ab7'">Foto de Perfil Alternativa</label>
-            <input class="form-control" type="file" [style.color]="'rgb(33, 37, 41)'">
+            <label for="formFile" class="form-label" [style.color]="'#673ab7'">Foto de Perfil Alternativa *</label>
+            <input class="form-control" type="file" [style.color]="'rgb(33, 37, 41)'" formControlName="imagenPerfilAlt" (change)="updateImagenPerfilAlt($event)">
         </div>
     </div>
 
     <hr class="my-4"/>
 
+    <mat-error *ngIf="failedRegister" [style.margin-bottom.px]="15">{{ registerError }}</mat-error>
+
     <div class="flex">
-        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid">Registrarse</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid">{{submitBtnTxt}}</button>
     </div>
 </form>

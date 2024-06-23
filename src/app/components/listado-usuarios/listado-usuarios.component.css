@@ -1,0 +1,10 @@
+
+.table-container {
+    overflow-x: scroll;
+}
+
+img {
+    width: 150px;
+    height: auto;
+}
+

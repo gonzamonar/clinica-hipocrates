@@ -1,12 +1,12 @@
 
 <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-    <form *ngIf="!session.isSessionActive()">
+    <form>
       <h2>Iniciar Sesión</h2>
       <div class="flexrow" [style.gap.px]="20" [style.margin]="'20px 0px'">
           <p class="small">Acceso Rápido:</p>
-          <button  mat-stroked-button color="primary" (click)="quickAccess('admin@hipocrates.com', 'admin1234')">Admin</button>
-          <button  mat-stroked-button color="primary" (click)="quickAccess('dr.house@hipocrates.com', 'especialista')">Especialista</button>
-          <button  mat-stroked-button color="primary" (click)="quickAccess('perez@gmail.com', 'paciente')">Paciente</button>
+          <button  mat-stroked-button color="primary" (click)="quickAccess('mr.robot@yopmail.com', 'sudor00t123')">Admin</button>
+          <button  mat-stroked-button color="primary" (click)="quickAccess('dr.house@yopmail.com', 'house1234')">Especialista</button>
+          <button  mat-stroked-button color="primary" (click)="quickAccess('homero.simpson@yopmail.com', 'novoyamentirtemarge')">Paciente</button>
       </div>
 
       <mat-form-field appearance="outline">
@@ -30,20 +30,21 @@
       </div>
 
       <div class="flex" [style.align-items]="'center'" [style.margin]="'15px 0'">
-        <small *ngIf="loginError" class="form-text" [style.color]="'red'">Usuario o contraseña incorrectos.</small>
+        <small *ngIf="loginError" class="form-text" [style.color]="'red'">{{ errorMessage }}</small>
+        <small *ngIf="verifyError" class="form-text" [style.color]="'red'" [style.text-align]="'center'">Debe verificar su cuenta para poder ingresar.<br/> <a [routerLink]="['/verificar-email']">¿No recibiste el email de verificación?</a> </small>
       </div>
 
       <div class="flex">
-        <button mat-flat-button color="primary" class="btn-submit" type="submit" (click)="Login()">
+        <button mat-flat-button color="primary" class="btn-submit" type="submit" [disabled]="this.sendingRequest" (click)="Login()">
           <mat-icon>key</mat-icon>
           Login
         </button>
       </div>
   </form>
 
-  <div *ngIf="session.isSessionActive()">
-      <h2>Sesión Iniciada</h2>
-      <p>{{session.getCurrentUser()}}</p>
-      <button class="btn btn-primary" (click)="Logout()">Cerrar Sesión</button>
-  </div>
+  <p
+  [style.padding]="'15px 0 '"
+  [style.text-align]="'center'">
+    ¿Aún no tenés una cuenta? <a [routerLink]="['/registro']">Registrarse</a>
+  </p>
 </div>

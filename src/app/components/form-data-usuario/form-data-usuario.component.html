@@ -2,7 +2,7 @@
 <form [formGroup]="userInfo">
     <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" class="form-control" name="nombre" formControlName="nombre">
+        <input matInput appToTitleCase type="text" class="form-control" name="nombre" formControlName="nombre">
         <mat-icon matSuffix>person</mat-icon>
         @if (controlHasErrors('nombre')) {
             <mat-error>{{ getControlErrorMessage('nombre') }}</mat-error>
@@ -11,7 +11,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Apellido</mat-label>
-        <input matInput type="text" class="form-control" name="apellido" formControlName="apellido">
+        <input matInput appToTitleCase type="text" class="form-control" name="apellido" formControlName="apellido">
         <mat-icon matSuffix>person</mat-icon>
         @if (controlHasErrors('apellido')) {
             <mat-error>{{ getControlErrorMessage('apellido') }}</mat-error>
@@ -37,13 +37,13 @@
     </mat-form-field>
     
     <div class="mb-3" [style.margin]="'15px 0px'">
-        <label for="formFile" class="form-label" [style.color]="'#673ab7'">Foto de Perfil</label>
-        <input class="form-control" type="file" name="formFile" [style.color]="'rgb(33, 37, 41)'">
+        <label for="formFile" class="form-label" [style.color]="'#673ab7'">Foto de Perfil *</label>
+        <input class="form-control" type="file" name="formFile" [style.color]="'rgb(33, 37, 41)'" formControlName="imagenPerfil" (change)="uploadFile($event)">
     </div>
 
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput type="text" class="form-control" name="email" formControlName="email">
+        <input matInput appToLowerCase type="text" class="form-control" name="email" formControlName="email">
         <mat-icon matSuffix>mail</mat-icon>
         @if (controlHasErrors('email')) {
             <mat-error>{{ getControlErrorMessage('email') }}</mat-error>

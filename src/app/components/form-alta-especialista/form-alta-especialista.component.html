@@ -1,20 +1,43 @@
 
 <form [formGroup]="form" (ngSubmit)="OnFormSubmitted()">
     <div class="row g-3" [style.margin-top.px]="5">    
-        <app-form-data-usuario [formGroup]="form"></app-form-data-usuario>
-        
+        <app-form-data-usuario [formGroup]="form" (uploadFileEvent)="updateImagenPerfil($event)"></app-form-data-usuario>
+
         <mat-form-field appearance="outline">
             <mat-label>Especialidad</mat-label>
-            <input matInput type="text" class="form-control" formControlName="especialidad">
+            <mat-select formControlName="especialidad">
+              <mat-option>-- Sin seleccionar --</mat-option>
+              <mat-option *ngFor="let i of dataEspecialidades.dataCollection" value="{{i.especialidad}}"> {{ i.especialidad }}</mat-option>
+            </mat-select>
             @if (controlHasErrors('especialidad')) {
                 <mat-error>{{ getControlErrorMessage('especialidad') }}</mat-error>
             }
         </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Agregar nueva Especialidad</mat-label>
+            <!-- <input matInput  type="text" class="form-control" formControlName="nuevaEspecialidad" #v (input)="v.value = toTitleCase(v.value)"/> -->
+            <input matInput appToTitleCase type="text" class="form-control" formControlName="nuevaEspecialidad"/>
+            <button
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="agregarEspecialidad()"
+                [attr.aria-label]="'Agregar nueva Especialidad'"
+            >
+              <mat-icon>{{ 'add' }}</mat-icon>
+            </button>
+            @if (controlHasErrors('nuevaEspecialidad')) {
+                <mat-error>{{ getControlErrorMessage('nuevaEspecialidad') }}</mat-error>
+            }
+          </mat-form-field>
     </div>
 
     <hr class="my-4"/>
 
+    <mat-error *ngIf="failedRegister" [style.margin-bottom.px]="15">{{ registerError }}</mat-error>
+    
     <div class="flex">
-        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid">Registrarse</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid">{{submitBtnTxt}}</button>
     </div>
 </form>

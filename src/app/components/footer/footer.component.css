@@ -23,7 +23,6 @@ fa-icon {
 }
 
 fa-icon:hover {
-    /* color: #3e28cd; */
     color: var(--accent);
     cursor: pointer;
 }

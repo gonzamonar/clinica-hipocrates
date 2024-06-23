@@ -1,11 +1,20 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
+// import { provideClientHydration } from '@angular/platform-browser';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+
+export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
+  showDelay: 0,
+  hideDelay: 0,
+  touchendHideDelay: 1500,
+  disableTooltipInteractivity: true,
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +30,10 @@ export const appConfig: ApplicationConfig = {
       "messagingSenderId":"697040935622"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideAnimations()
+    provideAnimations(),
+    provideStorage(() => getStorage()),
+    {provide: LOCALE_ID, useValue: 'es-AR'},
+    {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
   ]
 };
 

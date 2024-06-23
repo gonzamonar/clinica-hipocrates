@@ -1,17 +1,20 @@
 import { Component } from '@angular/core';
-import { FormRegisterComponent } from '../../components/form-register/form-register.component';
-import { FormLoginComponent } from '../../components/form-login/form-login.component';
+import { MatButtonModule } from '@angular/material/button';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { IconDefinition, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    FormLoginComponent,
-    FormRegisterComponent
+    MatButtonModule,
+    FontAwesomeModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 
 export class HomeComponent {
+  iconTurno: IconDefinition = faCalendar;
+
 }

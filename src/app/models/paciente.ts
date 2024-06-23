@@ -20,7 +20,13 @@ export class Paciente extends Usuario {
         this.imagenPerfilAlt = imagenPerfilAlt;       
     }
 
-    static arrayConstructor(arr: any[]): Paciente[] {
-        return arr.map((e) => { return new Paciente(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario, e.obraSocial, e.imagenPerfilAlt); });
+    static constructorArr(arr: any[]): Paciente[] {
+        return arr
+            .filter((e) => { return e['nivelUsuario'] == 'paciente';})
+            .map((e) => { return new Paciente(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario, e.obraSocial, e.imagenPerfilAlt); });
+    }
+
+    static filtrarUno(arr: Paciente[], email: string): Paciente {
+        return arr.filter((i) => {return i.email == email})[0];
     }
 }
