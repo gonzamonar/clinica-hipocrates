@@ -19,6 +19,9 @@ Este proyecto utiliza:
 | Admin | Que otro admin cree una cuenta en `/usuarios` `Tab - Alta de Usuarios`, verificar el email e iniciar sesión. |
 
 # Rutas
+
+![Navbar de la página](/readme/navbar.png)
+
 | Endpoint | Descripción | Permisos de Usuario |
 | ------ | ------ | ------ |
 | `/` | Página de bienvenida | Todos |
