@@ -20,7 +20,7 @@ Este proyecto utiliza:
 
 # Rutas
 
-![Navbar de la página](/readme/navbar.png)
+![Navbar de la página](/readme/navbar-img.png)
 
 | Endpoint | Descripción | Permisos de Usuario |
 | ------ | ------ | ------ |
