@@ -1,9 +1,9 @@
 # Clínica Hipócrates
-### Angular Web App: [clinica-hipocrates.web.app](clinica-hipocrates.web.app)
+### Angular Web App: [clinica-hipocrates.web.app](https://clinica-hipocrates.web.app)
 
 # Versionado
 Este proyecto utiliza:
-- [Angular CLI](https://github.com/angular/angular-cli) versión 17.3.4.
+- [Angular CLI](https://github.com/angular/angular-cli) 17.3.4.
 - [Firebase](https://firebase.google.com) (Hosting, Firestore, Auth, Storage) 17.1.0
 - [Bootstrap](https://ng-bootstrap.github.io/#/home) 5.3.2
 - [Angular Material](https://material.angular.io/guide/getting-started) 17.3.10
