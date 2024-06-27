@@ -24,7 +24,7 @@ export class Especialista extends Usuario {
         return new Especialista(obj.nombre, obj.apellido, obj.edad, obj.dni, obj.email, obj.imagenPerfil, obj.nivelUsuario, obj.especialidad, obj.habilitado);
     }
 
-    static constructorArr(arr: any[]): Especialista[] {
+    static override constructorArr(arr: any[]): Especialista[] {
         return arr
                 .filter((e) => { return e['nivelUsuario'] == 'especialista';})
                 .map((e) => { return new Especialista(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario, e.especialidad, e.habilitado); });
@@ -42,7 +42,7 @@ export class Especialista extends Usuario {
         return arr.filter((e: Especialista) => {return emails.includes(e.email)});
     }
 
-    static filtrarUno(arr: Especialista[], email: string): Especialista {
+    static override filtrarUno(arr: Especialista[], email: string): Especialista {
         return arr.filter((e: Especialista) => {return e.email == email})[0];
     }
     

@@ -14,7 +14,7 @@ export class Admin extends Usuario {
         super(nombre, apellido, edad, dni, email, imagenPerfil, nivelUsuario);  
     }
 
-    static arrayConstructor(arr: any[]): Admin[] {
+    static override constructorArr(arr: any[]): Admin[] {
         return arr.map((e) => { return new Admin(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario); });
     }
 }

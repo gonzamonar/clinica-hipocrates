@@ -2,12 +2,6 @@
 <div class="h-100 p-5 bg-body-tertiary border rounded-3">
     <form>
       <h2>Iniciar Sesión</h2>
-      <div class="flexrow" [style.gap.px]="20" [style.margin]="'20px 0px'">
-          <p class="small">Acceso Rápido:</p>
-          <button  mat-stroked-button color="primary" (click)="quickAccess('mr.robot@yopmail.com', 'sudor00t123')">Admin</button>
-          <button  mat-stroked-button color="primary" (click)="quickAccess('dr.house@yopmail.com', 'house1234')">Especialista</button>
-          <button  mat-stroked-button color="primary" (click)="quickAccess('homero.simpson@yopmail.com', 'novoyamentirtemarge')">Paciente</button>
-      </div>
 
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
@@ -47,4 +41,13 @@
   [style.text-align]="'center'">
     ¿Aún no tenés una cuenta? <a [routerLink]="['/registro']">Registrarse</a>
   </p>
+
+  <div class="flexrow quickAccessContainer" [style.gap.px]="20" [style.margin]="'20px 0px'">
+    <p class="small">Acceso Rápido:</p>
+    <div class="btn-container flexrow centered">
+      <button *ngFor="let user of quickAccessUsers" class='quickAccessBtn' (click)="quickAccess(user.email, user.pwd)" [matTooltip]="getTooltipTxt(user.email)">
+        <img [src]="getImgSrc(user.email)" alt="Imagen de Perfil" onerror="this.src = '../../../assets/img/navbar/user.png'">
+      </button>
+    </div>
+</div>
 </div>

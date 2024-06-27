@@ -10,6 +10,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatButtonModule } from '@angular/material/button'
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NotifierService } from '../../services/notifier.service';
+import { DataUsuariosService } from '../../services/data-usuarios.service';
+import { Usuario } from '../../models/usuario';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -24,13 +27,15 @@ import { NotifierService } from '../../services/notifier.service';
     MatSlideToggleModule,
     MatButtonModule,
     RouterModule,
-    RouterOutlet
+    RouterOutlet,
+    MatTooltipModule
   ],
   templateUrl: './form-login.component.html',
-  styleUrl: '../form-styles.css'
+  styleUrls: ['../form-styles.css', 'form-login.component.css'],
 })
 
 export class FormLoginComponent {
+  usuarios!: Usuario[];
   email: string = '';
   password: string = '';
   rememberLogin: boolean = false;
@@ -40,12 +45,27 @@ export class FormLoginComponent {
   verifyError: boolean = false;
   sendingRequest: boolean = false;
 
+  quickAccessUsers: any[] = [
+    {email: 'mr.robot@yopmail.com', pwd: 'sudor00t123'},
+    {email: 'rick.sanchez@yopmail.com', pwd: 'rick123456'},
+    {email: 'dr.house@yopmail.com', pwd: 'house1234'},
+    {email: 'homero.simpson@yopmail.com', pwd: 'novoyamentirtemarge'},
+    {email: 'cruz@yopmail.com', pwd: 'penelope'},
+    {email: 'king.joffrey@yopmail.com', pwd: 'iamtheking'},
+  ];
+
   constructor(
     public login: LoginService,
     public session: SessionService,
     private router: Router,
-    private notifier: NotifierService
-  ) { }
+    private notifier: NotifierService,
+    private providerDataUsuarios: DataUsuariosService
+  ) {
+    this.providerDataUsuarios.fetchAll()
+    .subscribe((res) => {
+      this.usuarios = Usuario.constructorArr(res);
+    });
+  }
 
   async Login() {
     if (!this.sendingRequest){
@@ -89,5 +109,19 @@ export class FormLoginComponent {
     this.verifyError = false;
     this.email = email;
     this.password = pwd;
+  }
+
+  getImgSrc(email: string){
+    let usuario = Usuario.filtrarUno(this.usuarios, email);
+    return usuario ? usuario.imagenPerfil : null;
+  }
+
+  getTooltipTxt(email: string){
+    let txt = '';
+    let usuario = Usuario.filtrarUno(this.usuarios, email);
+    if (usuario){
+      txt = usuario.fullName() + " - " + usuario.nivelUsuario;
+    }
+    return txt;
   }
 }

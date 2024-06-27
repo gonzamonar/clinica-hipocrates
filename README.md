@@ -19,7 +19,6 @@ Este proyecto utiliza:
 | Admin | Que otro admin cree una cuenta en `/usuarios` `Tab - Alta de Usuarios`, verificar el email e iniciar sesión. |
 
 # Rutas
-
 ![Navbar de la página](/readme/navbar-img.png)
 
 | Endpoint | Descripción | Permisos de Usuario |
@@ -40,5 +39,4 @@ Este proyecto utiliza:
 | `/mis-pacientes` | Listado con la historia clínica de los pacientes que fueron atendidos por el Especialista. | Especialista |
 | `/mi-perfil` |  `Tab - Mi Perfil`: Página con los datos y foto del usuario.  | Admin, Paciente, Especialista |
 | | `Tab - Mis Horarios`: Página con el selector de horarios semanales del Especialista.  | Especialista |
-
 

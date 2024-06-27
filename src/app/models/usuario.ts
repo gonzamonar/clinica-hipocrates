@@ -29,4 +29,13 @@ export class Usuario {
     fullName(): string{
         return this.nombre + " " + this.apellido;
     }
+
+    static constructorArr(arr: any[]): Usuario[] {
+        return arr
+            .map((e) => { return new Usuario(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario); });
+    }
+
+    static filtrarUno(arr: Usuario[], email: string): Usuario {
+        return arr.filter((i) => {return i.email == email})[0];
+    }
 }
