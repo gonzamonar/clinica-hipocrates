@@ -1,3 +1,5 @@
+import { Estado } from "./enums/estado";
+
 export class Turno {
     nro_turno: number;
     estado: string;
@@ -10,6 +12,7 @@ export class Turno {
     review: string | null;
     nro_encuesta: number | null;
     calificacion: number | null;
+    nro_historia_clinica: number | null;
 
     constructor(
         nro_turno: number,
@@ -18,11 +21,12 @@ export class Turno {
         paciente: string,
         dia: string,
         hora: string,
-        estado: string = "Pendiente",
+        estado: string = Estado.Pendiente,
         comentario: string | null = null,
         review: string | null = null,
         nro_encuesta: number | null = null,
         calificacion: number | null = null,
+        nro_historia_clinica: number | null = null,
     ) {
         this.nro_turno = nro_turno;
         this.estado = estado;
@@ -35,6 +39,7 @@ export class Turno {
         this.review = review;
         this.nro_encuesta = nro_encuesta;
         this.calificacion = calificacion;
+        this.nro_historia_clinica = nro_historia_clinica;
     }
 
     encuestaRealizada(): boolean {
@@ -49,6 +54,13 @@ export class Turno {
         return this.review != null;
     }
 
+    includes(str: string){
+        let searchStr: string = str.toLocaleLowerCase();
+        return this.especialidad.toLocaleLowerCase().includes(searchStr);
+    }
+
+
+
     static constructorArr(arr: any): Turno[] {
         return arr.map((i: Turno) => { return new Turno(
             i.nro_turno,
@@ -62,10 +74,17 @@ export class Turno {
             i.review,
             i.nro_encuesta,
             i.calificacion,
+            i.nro_historia_clinica,
         ) });
     }
 
+    static filtrarUno(arr: Turno[], nro_turno: number): Turno {
+        return arr.filter((i) => {return i.nro_turno == nro_turno})[0];
+    }
 
+    static ordenarPorNroTurnoDesc(arr: Turno[]){
+        return arr.sort((a, b) => { return b.nro_turno - a.nro_turno });
+    }
 
     static ordenarPorFecha(arr: Turno[]){
         return arr.sort((a, b) => { return a.dia.localeCompare(b.dia) });
@@ -108,7 +127,7 @@ export class Turno {
     }
 
     static filtrarPorFecha(arr: Turno[], diaInicio: string, diaFin: string){
-        return arr.filter((t: Turno) => { return t.dia > diaInicio && t.dia < diaFin });
+        return arr.filter((t: Turno) => { return t.dia >= diaInicio && t.dia <= diaFin });
     }
 
     static getEspecialidades(arr: Turno[]){
@@ -122,6 +141,4 @@ export class Turno {
     static getEspecialistas(arr: Turno[]){
         return [... new Set(arr.map((t: Turno) => { return t.especialista }))];
     }
-
-
 }

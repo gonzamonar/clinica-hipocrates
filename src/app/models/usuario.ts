@@ -30,6 +30,11 @@ export class Usuario {
         return this.nombre + " " + this.apellido;
     }
 
+    includes(str: string): boolean {
+        let searchStr: string = str.toLocaleLowerCase();
+        return this.fullName().toLocaleLowerCase().includes(searchStr);
+    }
+
     static constructorArr(arr: any[]): Usuario[] {
         return arr
             .map((e) => { return new Usuario(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario); });
@@ -37,5 +42,9 @@ export class Usuario {
 
     static filtrarUno(arr: Usuario[], email: string): Usuario {
         return arr.filter((i) => {return i.email == email})[0];
+    }
+
+    static getUserFullName(arr: Usuario[], email: string): string {
+        return this.filtrarUno(arr, email).fullName();
     }
 }

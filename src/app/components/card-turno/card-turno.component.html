@@ -12,9 +12,25 @@
                 <img class="logo" src="../../../assets/img/navbar/logo.png" alt="">
             </div>
             <div class="flex">
-                <p>Paciente: {{ nombrePaciente != '' ? nombrePaciente : turno.paciente }}</p>
-                <p>Especialista: {{ nombreEspecialista != '' ? nombreEspecialista : turno.especialista }}</p>
+                <p>Paciente: {{ getNombreUsuario(turno.paciente) }}</p>
+                <p>Especialista: {{ getNombreUsuario(turno.especialista) }}</p>
                 <p>Especialidad: {{ turno.especialidad }}</p>
+            </div>
+        </div>
+
+        
+        <div class="card-middle" *ngIf="historiaClinica">
+            <hr [style.margin]="'0px 0px'"/>
+            <div class="flexrow centered">
+                <mat-chip-set aria-label="Datos de historia clínica">
+                    <mat-chip>Altura: {{historiaClinica.altura}} cm</mat-chip>
+                    <mat-chip>Peso: {{historiaClinica.peso}} kg</mat-chip>
+                    <mat-chip>Temperatura: {{historiaClinica.temperatura}}ºC</mat-chip>
+                    <mat-chip>Presión: {{historiaClinica.presion}} mm/Hg</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico1">{{historiaClinica.datoDinamico1.clave | toTitleCase}}: {{historiaClinica.datoDinamico1.valor | toTitleCase}}</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico2">{{historiaClinica.datoDinamico2.clave | toTitleCase}}: {{historiaClinica.datoDinamico2.valor | toTitleCase}}</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico3">{{historiaClinica.datoDinamico3.clave | toTitleCase}}: {{historiaClinica.datoDinamico3.valor | toTitleCase}}</mat-chip>
+                </mat-chip-set>
             </div>
         </div>
 
@@ -27,14 +43,14 @@
                 <fa-icon [icon]="getStatusIcon(turno.estado)"></fa-icon>{{ turno.estado }}
             </div>
             <div [matTooltip]="displayTooltipComentario(turno.comentario)">
-                <button mat-fab extended color="white" [disabled]="turno.comentario == null" >
+                <button mat-fab extended color="white" [disabled]="turno.comentario == null" (click)="showComment(turno.comentario)">
                     <mat-icon>chat</mat-icon>comentario</button>
             </div>
-            <div [matTooltip]="displayTooltipReview(turno.review)">
-                <button mat-fab extended color="white" [disabled]="turno.review == null">
+            <div [matTooltip]="displayTooltipReview(turno.review)" *ngIf="displayShowReviewBtn(turno)">
+                <button mat-fab extended color="white" [disabled]="turno.review == null" (click)="showReview(turno.review)">
                     <mat-icon>reviews</mat-icon>reseña</button>
             </div>
-            <div [matTooltip]="displayTooltipEncuesta(turno.nro_encuesta)">
+            <div [matTooltip]="displayTooltipEncuesta(turno.nro_encuesta)" *ngIf="displayShowEncuestaBtn(turno)">
                 <button mat-fab extended color="white" [disabled]="turno.nro_encuesta == null">
                     <mat-icon>quiz</mat-icon>encuesta</button>
             </div>
@@ -42,11 +58,16 @@
     </div>
     
     <div class="btn-container flex">
-        <div><button (click)="actionAcceptBtn()" *ngIf="displayAcceptBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#3ca80e'">Aceptar Turno</button></div>
-        <div><button (click)="actionCancelBtn()" *ngIf="displayCancelBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#e63200'">Cancelar Turno</button></div>
-        <div><button (click)="actionRejectBtn()" *ngIf="displayRejectBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#a60000'">Rechazar Turno</button></div>
-        <div><button (click)="actionFinishBtn()" *ngIf="displayFinishBtn(turno)" mat-flat-button color="primary">Finalizar Turno</button></div>
-        <div><button (click)="actionCompleteQuizBtn()" *ngIf="displayCompleteQuizBtn(turno)" mat-flat-button color="primary">Completar Encuesta</button></div>
-        <div><button (click)="actionCalificationBtn()" *ngIf="displayCalificationBtn(turno)" mat-flat-button color="primary">Calificar Atención</button></div>
+        <!-- Cambios de Estado -->
+        <div><button (click)="actionAcceptBtn(turno)" *ngIf="displayAcceptBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#3ca80e'">Aceptar Turno</button></div>
+        <div><button (click)="actionCancelBtn(turno)" *ngIf="displayCancelBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#e63200'">Cancelar Turno</button></div>
+        <div><button (click)="actionRejectBtn(turno)" *ngIf="displayRejectBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#a60000'">Rechazar Turno</button></div>
+        <div><button (click)="actionFinishBtn(turno)" *ngIf="displayFinishBtn(turno)" mat-flat-button color="primary">Finalizar Turno</button></div>
+
+        <!-- Acciones ya finalizado -->
+        <div><button (click)="actionCalificationBtn(turno)" *ngIf="displayCalificationBtn(turno)" mat-flat-button color="primary">Calificar Atención</button></div>
+        <div><button (click)="actionCompleteQuizBtn(turno)" *ngIf="displayCompleteQuizBtn(turno)" mat-flat-button color="primary">Completar Encuesta</button></div>
+        <div><button (click)="actionCompleteReviewBtn(turno)" *ngIf="displayCompleteReviewBtn(turno)" mat-flat-button color="primary">Completar Reseña</button></div>
+        <div><button (click)="actionUpdateClinicHistoryBtn(turno)" *ngIf="displayUpdateClinicHistoryBtn(turno)" mat-flat-button color="primary">Cargar Historia Clínica</button></div>
     </div>
 </div>

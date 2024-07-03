@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { PerfilComponent } from '../../components/perfil/perfil.component';
 import { SessionService } from '../../services/session.service';
 import { CommonModule } from '@angular/common';
+import { ListadoHistoriaClinicaComponent } from '../../components/listado-historia-clinica/listado-historia-clinica.component';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
     HorariosComponent,
     PerfilComponent,
     MatTabsModule,
+    ListadoHistoriaClinicaComponent,
   ],
   templateUrl: './mi-perfil.component.html',
   styleUrl: './mi-perfil.component.css'

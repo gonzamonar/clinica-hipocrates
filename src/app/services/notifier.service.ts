@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal, { SweetAlertIcon } from 'sweetalert2'; //https://sweetalert2.github.io
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,14 @@ export class NotifierService {
   private openSnackBar(message: string, action: string, duration: number) {
     this._snackBar.open(message, action, {
       duration: duration
+    });
+  }
+
+  alert(title: string, text: string, icon: SweetAlertIcon = "success"){
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon
     });
   }
 }

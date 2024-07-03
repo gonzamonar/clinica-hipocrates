@@ -1,13 +1,50 @@
 
-<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'" [style.gap.px]="30">
     <h2>Estadísticas de la Clínica</h2>
+    
     <h3>Total de Turnos: {{ turnos ? turnos.length : 0 }}</h3>
-    <h3>Turnos por Especialidad</h3>
-    <p *ngFor="let especialidad of especialidades">{{especialidad}}: {{ cantidadTurnosEspecialidades(especialidad) }}</p>
-    <h3>Turnos por Día</h3>
-    <p *ngFor="let dia of dias">{{dia}}: {{ cantidadTurnosDias(dia) }}</p>
-    <h3>Turnos Solicitados por Médico</h3>
-    <p *ngFor="let especialista of especialistas">{{especialista.fullName()}}: {{ cantidadTurnosSolicitadosEspecialistas(especialista.email) }}</p>
-    <h3>Turnos Finalizados por Médico</h3>
-    <p *ngFor="let especialista of especialistas">{{especialista.fullName()}}: {{ cantidadTurnosFinalizadosEspecialistas(especialista.email) }}</p>
+    
+    <div class="flex centered">
+        <h3>Turnos por Especialidad</h3>
+        <mat-chip-set aria-label="Turnos por Especialidad">
+            <mat-chip *ngFor="let especialidad of especialidades">{{especialidad}}: {{ cantidadTurnosEspecialidades(especialidad) }}</mat-chip>
+        </mat-chip-set>
+    </div>
+
+    <div class="flex centered">
+        <h3>Turnos por Día</h3>
+        <mat-chip-set aria-label="Turnos por Día">
+            <mat-chip *ngFor="let dia of dias">{{dia}}: {{ cantidadTurnosDias(dia) }}</mat-chip>
+        </mat-chip-set>
+    </div>
+    
+    <div class="flex centered">
+        <h3>Turnos Solicitados por Médico</h3>
+        <div class="flexrow centered" [style.padding-bottom.px]="20" [style.gap.px]="30">
+            <mat-form-field>
+                <mat-label>Desde</mat-label>
+                <input matInput [matDatepicker]="pickerSolicitadosFrom" (dateChange)="filtrarFechaTurnosSolicitados()" [(ngModel)]="fechaTurnosSolicitadosDesde">
+                <mat-hint>DD/MM/AAAA</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="pickerSolicitadosFrom"></mat-datepicker-toggle>
+                <mat-datepicker #pickerSolicitadosFrom></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Hasta</mat-label>
+                <input matInput [matDatepicker]="pickerSolicitadosTo" (dateChange)="filtrarFechaTurnosSolicitados()" [(ngModel)]="fechaTurnosSolicitadosHasta">
+                <mat-hint>DD/MM/AAAA</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="pickerSolicitadosTo"></mat-datepicker-toggle>
+                <mat-datepicker #pickerSolicitadosTo></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <mat-chip-set aria-label="Turnos Solicitados por Médico">
+            <mat-chip *ngFor="let especialista of especialistas">{{especialista.fullName()}}: {{ cantidadTurnosSolicitadosEspecialistas(especialista.email) }}</mat-chip>
+        </mat-chip-set>
+    </div>
+    
+    <div class="flex centered">
+        <h3>Turnos Finalizados por Médico</h3>
+        <mat-chip-set aria-label="Turnos Finalizados por Médico">
+            <mat-chip *ngFor="let especialista of especialistas">{{especialista.fullName()}}: {{ cantidadTurnosFinalizadosEspecialistas(especialista.email) }}</mat-chip>
+        </mat-chip-set>
+    </div>
 </div>

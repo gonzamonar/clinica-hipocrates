@@ -8,6 +8,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -32,8 +33,9 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideAnimations(),
     provideStorage(() => getStorage()),
-    {provide: LOCALE_ID, useValue: 'es-AR'},
-    {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    provideNativeDateAdapter(),
+    { provide: LOCALE_ID, useValue: 'es-AR' },
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
   ]
 };
 

@@ -2,18 +2,18 @@
 <div class="h-100 p-5 bg-body-tertiary border rounded-3" [style.overflow]="'hidden'">
     <h2>Registrarse</h2>
     <div class="btn-container flexrow centered">
-      <button mat-flat-button color="primary" [class.unactive]="vistaEspecialista"
+      <button mat-flat-button color="primary" [class.unactive]="vistaEspecialista || vistaEspecialista == null"
           (click)="vistaEspecialista = false" [matTooltip]="'Paciente'">
           <fa-icon [icon]="iconPaciente"></fa-icon>
       </button>
 
-      <button mat-flat-button color="primary" [class.unactive]="!vistaEspecialista"
+      <button mat-flat-button color="primary" [class.unactive]="!vistaEspecialista || vistaEspecialista == null"
           (click)="vistaEspecialista = true" [matTooltip]="'Especialista'">
           <fa-icon [icon]="iconEspecialista"></fa-icon>
       </button>
     </div>
   
-    <div class="tab-container">
+    <div class="tab-container" *ngIf="vistaEspecialista != null">
       <div [@leftTabAnimation]="vistaEspecialista ? 'invisible' : 'visible'">
         <app-form-alta-paciente></app-form-alta-paciente>
       </div>

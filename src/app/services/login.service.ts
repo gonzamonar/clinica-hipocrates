@@ -4,6 +4,9 @@ import Swal from 'sweetalert2'; //https://sweetalert2.github.io
 import { signOut } from 'firebase/auth';
 import { SessionService } from './session.service';
 import { Auth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { NotifierService } from './notifier.service';
+import { Router } from '@angular/router';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,10 @@ export class LoginService {
 
   constructor(
     public auth: Auth,
-    public session: SessionService
+    public session: SessionService,
+    private router: Router,
+    private notifier: NotifierService,
+    private logger: LoggerService
   ) { }
 
   async Register(email: string, pwd: string) {
@@ -51,8 +57,13 @@ export class LoginService {
       signInWithEmailAndPassword(this.auth, email, password)
       .then(
         async (response) => {
-          await this.session.updateSession(response.user);
-          loginError = false;
+          if (response.user != null){
+            if (response.user.email != null){
+              this.logger.createLog(response.user.email);
+            }
+            await this.session.updateSession(response.user);
+            loginError = false;
+          }
         }
       ).catch((e) => {
         loginError = true;
@@ -80,11 +91,8 @@ export class LoginService {
     }).then((result) => {
       if (result.isConfirmed) {
         this.signOut();
-        Swal.fire({
-          title: "¡Sesión cerrada!",
-          text: "Tu sesión fue cerrada exitosamente.",
-          icon: "success"
-        });
+        this.router.navigateByUrl("/");
+        this.notifier.popUpNotification("Sesión fue cerrada exitosamente.");
       }
     });
   }

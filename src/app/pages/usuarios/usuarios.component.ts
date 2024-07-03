@@ -4,15 +4,17 @@ import { ListadoUsuariosComponent } from '../../components/listado-usuarios/list
 import { MatTabsModule } from '@angular/material/tabs';
 import { SessionService } from '../../services/session.service';
 import { CommonModule } from '@angular/common';
+import { ListadoHistoriaClinicaComponent } from '../../components/listado-historia-clinica/listado-historia-clinica.component';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
   imports: [
-    CommonModule,
+    ListadoHistoriaClinicaComponent,
     FormgroupAltaUsuariosComponent,
     ListadoUsuariosComponent,
-    MatTabsModule
+    CommonModule,
+    MatTabsModule,
   ],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'

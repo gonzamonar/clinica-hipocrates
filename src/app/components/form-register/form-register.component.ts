@@ -60,7 +60,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 
 export class FormRegisterComponent {
-  vistaEspecialista: boolean = false;
+  vistaEspecialista: boolean | null = null;
   iconEspecialista: IconDefinition = faUserDoctor;
   iconPaciente: IconDefinition = faBedPulse;
 }

@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ColorEstado } from '../../../models/enums/color-estado';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dialog-cancel',
@@ -15,11 +17,22 @@ import { MatInputModule } from '@angular/material/input';
     MatDialogModule,
     MatButtonModule,
     MatFormField,
-    MatInputModule
+    MatInputModule,
+    MatTooltipModule
   ],
   templateUrl: './dialog-cancel.component.html',
-  styleUrl: './dialog-cancel.component.css'
+  styleUrl: '../modals.component.css'
 })
+
 export class DialogCancelComponent {
+  readonly dialogRef = inject(MatDialogRef<DialogCancelComponent>);
   comentario: string = '';
+
+  volver(): void {
+    this.dialogRef.close();
+  }
+  
+  getBtnColor(): string {
+    return ColorEstado.Cancelado;
+  }
 }

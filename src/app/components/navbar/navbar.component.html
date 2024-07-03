@@ -37,29 +37,18 @@ https://stackoverflow.com/questions/57834100/change-style-header-nav-with-inters
 
 <div #navDiv class="nav-container flexrow centered border-bottom" [class.fixed]="fixed">
   <nav class="navbar flexrow">
+    <!-- PUBLIC -->
     <p><a [routerLink]="['']"><fa-icon [icon]="iconInicio"></fa-icon>Inicio</a></p>
     <p><a [routerLink]="['/instalaciones']"><fa-icon [icon]="iconInstalaciones"></fa-icon>Instalaciones</a></p>
     <p><a [routerLink]="['/especialidades']"><fa-icon [icon]="iconEspecialidades"></fa-icon>Especialidades</a></p>
-    <!-- <p *ngIf="session.isPatientLevelSession()"><a [routerLink]="['/turnos']"><fa-icon [icon]="iconTurnos"></fa-icon>Mis Turnos</a></p>
-    <p *ngIf="session.isSpecialistLevelSession()"><a [routerLink]="['/pacientes']"><fa-icon [icon]="iconPacientes"></fa-icon>Pacientes</a></p>
-    <p *ngIf="session.isAdminLevelSession()"><a [routerLink]="['/usuarios']"><fa-icon [icon]="iconUsuarios"></fa-icon>Usuarios</a></p> -->
-    
-    <!-- ADMIN -->
-    <p ><a [routerLink]="['/usuarios']"><fa-icon [icon]="iconUsuarios"></fa-icon>Usuarios</a></p>
-    <p ><a [routerLink]="['/turnos']"><fa-icon [icon]="iconTurnos"></fa-icon>Turnos</a></p>
-
-    <!-- ESPECIALISTA -->
-    <p ><a [routerLink]="['/mis-pacientes']"><fa-icon [icon]="iconPacientes"></fa-icon>Mis Pacientes</a></p>
-
-    <!-- ESPECIALISTA + PACIENTE -->
-    <p ><a [routerLink]="['/mis-turnos']"><fa-icon [icon]="iconMisTurnos"></fa-icon>Mis Turnos</a></p>
-
-    <!-- ADMIN + PACIENTE -->
-    <p ><a [routerLink]="['/solicitar-turno']"><fa-icon [icon]="iconSolicitarTurno"></fa-icon>Solicitar Turno</a></p>
-
-    <!-- TODOS -->
-    <p ><a [routerLink]="['/mi-perfil']"><fa-icon [icon]="iconMiPerfil"></fa-icon>Mi Perfil</a></p>
-    <p ><a [routerLink]="['/estadisticas']"><fa-icon [icon]="iconEstadisticas"></fa-icon>Estadísticas</a></p>
+    <!-- LOGGED USERS -->
+    <p *ngIf="this.session.isAdminLevelSession()"><a [routerLink]="['/usuarios']"><fa-icon [icon]="iconUsuarios"></fa-icon>Usuarios</a></p>
+    <p *ngIf="this.session.isAdminLevelSession()"><a [routerLink]="['/turnos']"><fa-icon [icon]="iconTurnos"></fa-icon>Turnos</a></p>
+    <p *ngIf="this.session.isSpecialistLevelSession()"><a [routerLink]="['/mis-pacientes']"><fa-icon [icon]="iconPacientes"></fa-icon>Mis Pacientes</a></p>
+    <p *ngIf="this.session.isPatientLevelSession() || this.session.isSpecialistLevelSession()"><a [routerLink]="['/mis-turnos']"><fa-icon [icon]="iconMisTurnos"></fa-icon>Mis Turnos</a></p>
+    <p *ngIf="this.session.isPatientLevelSession() || this.session.isAdminLevelSession()"><a [routerLink]="['/solicitar-turno']"><fa-icon [icon]="iconSolicitarTurno"></fa-icon>Solicitar Turno</a></p>
+    <p *ngIf="this.session.isAdminLevelSession()"><a [routerLink]="['/estadisticas']"><fa-icon [icon]="iconEstadisticas"></fa-icon>Estadísticas</a></p>
+    <p *ngIf="this.session.isSessionActive()"><a [routerLink]="['/mi-perfil']"><fa-icon [icon]="iconMiPerfil"></fa-icon>Mi Perfil</a></p>
   </nav>
   
   <div class="flexrow centered">
