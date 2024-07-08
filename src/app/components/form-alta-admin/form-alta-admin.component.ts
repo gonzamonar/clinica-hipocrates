@@ -10,6 +10,7 @@ import { LoginService } from '../../services/login.service';
 import { DataUsuariosService } from '../../services/data-usuarios.service';
 import { Admin } from '../../models/admin';
 import { NotifierService } from '../../services/notifier.service';
+import { SessionService } from '../../services/session.service';
 
 
 @Component({
@@ -39,7 +40,7 @@ export class FormAltaAdminComponent {
     public dataEspecialidades: DataEspecialidadesService,
     private providerDataUsuarios: DataUsuariosService,
     private loginService: LoginService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
   ) { }
 
 

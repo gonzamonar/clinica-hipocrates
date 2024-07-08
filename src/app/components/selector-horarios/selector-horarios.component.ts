@@ -18,7 +18,6 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SelectorHorariosComponent implements OnChanges {
   @Input() especialista: string = '';
-  @Input() especialidad: string = '';
   @Input() horaInicio: number = 8;
   @Input() horaFin: number = 19;
   @Input() horaFinSa: number = 14;
@@ -45,8 +44,8 @@ export class SelectorHorariosComponent implements OnChanges {
   }
 
   async ngOnChanges() {
-    if (this.especialista != '' && this.especialidad != ''){
-      this.providerDataHorarios.fetchOne(this.especialista, this.especialidad)
+    if (this.especialista != ''){
+      this.providerDataHorarios.fetchOne(this.especialista)
       .then((res) => {
         if(res){
             this.horarios = res.horarios.split(',');
@@ -82,9 +81,9 @@ export class SelectorHorariosComponent implements OnChanges {
   }
 
   guardarHorario(){
-    if (this.especialista != '' && this.especialidad != ''){
+    if (this.especialista != ''){
       let stringHorarios: string = this.horarios.sort((a,b) => { return a.localeCompare(b)}).join(",");
-      this.providerDataHorarios.pushOne(stringHorarios, this.especialista, this.especialidad);
+      this.providerDataHorarios.pushOne(stringHorarios, this.especialista);
       this.notifier.popUpNotification("Horarios actualizados exitosamente.");
     } else {
       this.notifier.popUpNotification("Ha ocurrido un error realizado el guardado de horarios.");

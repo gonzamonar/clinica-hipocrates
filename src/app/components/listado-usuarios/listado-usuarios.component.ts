@@ -10,6 +10,9 @@ import { RenderNullStringFieldPipe } from '../../pipes/render-null-string-field.
 import { RenderBooleanFieldPipe } from '../../pipes/render-boolean-field.pipe';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { faFileExcel, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DatabaseService } from '../../services/database.service';
 
 
 @Component({
@@ -25,7 +28,8 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
     MatButtonModule,
     MatTooltipModule,
     MatSortModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    FontAwesomeModule,
   ],
   templateUrl: './listado-usuarios.component.html',
   styleUrl: './listado-usuarios.component.css'
@@ -36,16 +40,18 @@ export class ListadoUsuariosComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   requestInProgress: boolean = false;
   hideImgs: boolean = false;
-
+  iconXls: IconDefinition = faFileExcel;
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor (
-    public userdataProvider: DataUsuariosService,
+    public providerDataUsuarios: DataUsuariosService,
+    public DB: DatabaseService
   ) { }
   
   ngOnInit(): void {
-    this.userdataProvider.fetchAll().subscribe((response) => {
+    this.providerDataUsuarios.fetchAll().subscribe((response) => {
       this.dataSource = new MatTableDataSource<any>(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -55,12 +61,11 @@ export class ListadoUsuariosComponent implements OnInit {
   habilitar(email: string, habilitacionActual: boolean | null){
     this.requestInProgress = true;
     if (habilitacionActual != null){
-      this.userdataProvider.updateHabilitacionEspecialista(email, habilitacionActual)
+      this.providerDataUsuarios.updateHabilitacionEspecialista(email, habilitacionActual)
       .then(() => { this.requestInProgress = false; });
     } else {
       this.requestInProgress = false;
     }
-
   }
 
   toggleChanges($event: MatSlideToggleChange){

@@ -3,8 +3,8 @@
     <div class="card-turno flex">
         <div class="card-header flexrow">
             <p [matTooltip]="'Número de turno'">Nº {{ turno.nro_turno }}</p>
-            <p [matTooltip]="'Fecha del turno'">{{ turno.dia }}</p>
-            <p [matTooltip]="'Hora del turno'">{{ turno.hora }}</p>
+            <p [matTooltip]="'Fecha del turno'">{{ turno.dia | toDate }}</p>
+            <p [matTooltip]="'Hora del turno'">{{ turno.hora | toTime }}</p>
             <p [matTooltip]="displayTooltipCalificacion(turno.calificacion)">{{ turno.calificacion | renderNullStringField }} <fa-icon [icon]="iconStar"></fa-icon></p>
         </div>
         <div class="card-body flexrow">
@@ -12,24 +12,23 @@
                 <img class="logo" src="../../../assets/img/navbar/logo.png" alt="">
             </div>
             <div class="flex">
-                <p>Paciente: {{ getNombreUsuario(turno.paciente) }}</p>
-                <p>Especialista: {{ getNombreUsuario(turno.especialista) }}</p>
+                <p>Paciente: {{ turno.Paciente() }}</p>
+                <p>Especialista: {{ turno.Especialista() }}</p>
                 <p>Especialidad: {{ turno.especialidad }}</p>
             </div>
         </div>
-
         
         <div class="card-middle" *ngIf="historiaClinica">
             <hr [style.margin]="'0px 0px'"/>
             <div class="flexrow centered">
-                <mat-chip-set aria-label="Datos de historia clínica">
+                <mat-chip-set aria-label="Datos de historia clínica" class="flexrow centered">
                     <mat-chip>Altura: {{historiaClinica.altura}} cm</mat-chip>
                     <mat-chip>Peso: {{historiaClinica.peso}} kg</mat-chip>
                     <mat-chip>Temperatura: {{historiaClinica.temperatura}}ºC</mat-chip>
                     <mat-chip>Presión: {{historiaClinica.presion}} mm/Hg</mat-chip>
-                    <mat-chip *ngIf="historiaClinica.datoDinamico1">{{historiaClinica.datoDinamico1.clave | toTitleCase}}: {{historiaClinica.datoDinamico1.valor | toTitleCase}}</mat-chip>
-                    <mat-chip *ngIf="historiaClinica.datoDinamico2">{{historiaClinica.datoDinamico2.clave | toTitleCase}}: {{historiaClinica.datoDinamico2.valor | toTitleCase}}</mat-chip>
-                    <mat-chip *ngIf="historiaClinica.datoDinamico3">{{historiaClinica.datoDinamico3.clave | toTitleCase}}: {{historiaClinica.datoDinamico3.valor | toTitleCase}}</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico1">{{historiaClinica.datoDinamico1 | toTitleCase}}</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico2">{{historiaClinica.datoDinamico2 | toTitleCase}}</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico3">{{historiaClinica.datoDinamico3 | toTitleCase}}</mat-chip>
                 </mat-chip-set>
             </div>
         </div>
@@ -42,12 +41,12 @@
                 [matTooltip]="'Estado'">
                 <fa-icon [icon]="getStatusIcon(turno.estado)"></fa-icon>{{ turno.estado }}
             </div>
-            <div [matTooltip]="displayTooltipComentario(turno.comentario)">
-                <button mat-fab extended color="white" [disabled]="turno.comentario == null" (click)="showComment(turno.comentario)">
+            <div [matTooltip]="displayTooltipComentario(turno.nro_comentario)">
+                <button mat-fab extended color="white" [disabled]="turno.nro_comentario == null" (click)="showComment(turno.nro_comentario)">
                     <mat-icon>chat</mat-icon>comentario</button>
             </div>
-            <div [matTooltip]="displayTooltipReview(turno.review)" *ngIf="displayShowReviewBtn(turno)">
-                <button mat-fab extended color="white" [disabled]="turno.review == null" (click)="showReview(turno.review)">
+            <div [matTooltip]="displayTooltipReview(turno.nro_review)" *ngIf="displayShowReviewBtn(turno)">
+                <button mat-fab extended color="white" [disabled]="turno.nro_review == null" (click)="showReview(turno.nro_review)">
                     <mat-icon>reviews</mat-icon>reseña</button>
             </div>
             <div [matTooltip]="displayTooltipEncuesta(turno.nro_encuesta)" *ngIf="displayShowEncuestaBtn(turno)">

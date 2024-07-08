@@ -29,7 +29,6 @@ export class ListadoLogsComponent implements OnInit {
     public logger: LoggerService,
   ) { }
 
-
   ngOnInit(): void {
     this.logger.fetchAll().subscribe(
       (res) => {

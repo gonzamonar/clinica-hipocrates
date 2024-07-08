@@ -1,15 +1,20 @@
 import { Estado } from "./enums/estado";
+import { Especialista } from "./especialista";
+import { Paciente } from "./paciente";
+import { DatabaseService } from "../services/database.service";
+import { HistoriaClinica } from "./historia-clinica";
+import { Comentario } from "./comentario";
 
 export class Turno {
     nro_turno: number;
-    estado: string;
+    estado: Estado;
     especialista: string;
     especialidad: string;
     paciente: string;
     dia: string;
     hora: string;
-    comentario: string | null;
-    review: string | null;
+    nro_comentario: number | null;
+    nro_review: number | null;
     nro_encuesta: number | null;
     calificacion: number | null;
     nro_historia_clinica: number | null;
@@ -21,9 +26,9 @@ export class Turno {
         paciente: string,
         dia: string,
         hora: string,
-        estado: string = Estado.Pendiente,
-        comentario: string | null = null,
-        review: string | null = null,
+        estado: Estado = Estado.Pendiente,
+        nro_comentario: number | null = null,
+        nro_review: number | null = null,
         nro_encuesta: number | null = null,
         calificacion: number | null = null,
         nro_historia_clinica: number | null = null,
@@ -35,11 +40,49 @@ export class Turno {
         this.paciente = paciente;
         this.dia = dia;
         this.hora = hora;
-        this.comentario = comentario;
-        this.review = review;
+        this.nro_comentario = nro_comentario;
+        this.nro_review = nro_review;
         this.nro_encuesta = nro_encuesta;
         this.calificacion = calificacion;
         this.nro_historia_clinica = nro_historia_clinica;
+    }
+
+    Especialista(): Especialista {
+        const DB = DatabaseService.instance;
+        return Especialista.filtrarUno(DB.especialistas, this.especialista);
+    }
+    
+    Paciente(): Paciente {
+        const DB = DatabaseService.instance;
+        return Paciente.filtrarUno(DB.pacientes, this.paciente);
+    }
+    
+    Review(): Comentario | null {
+        let review: Comentario | null = null;
+        if (this.nro_review != null) {
+            const DB = DatabaseService.instance;
+            review = Comentario.filtrarUno(DB.comentarios, this.nro_review);
+        }
+        return review;
+    }
+    
+    Comentario(): Comentario | null {
+        const DB = DatabaseService.instance;
+        let comentario: Comentario | null = null;
+        if (this.nro_comentario != null) {
+            const DB = DatabaseService.instance;
+            comentario = Comentario.filtrarUno(DB.comentarios, this.nro_comentario);
+        }
+        return comentario;
+    }
+
+    HistoriaClinica(): HistoriaClinica | null {
+        let hc: HistoriaClinica | null = null;
+        if (this.nro_historia_clinica != null) {
+            const DB = DatabaseService.instance;
+            hc = HistoriaClinica.filtrarUno(DB.historiasClinicas, this.nro_historia_clinica);
+        }
+        return hc;
     }
 
     encuestaRealizada(): boolean {
@@ -47,19 +90,23 @@ export class Turno {
     }
 
     tieneComentarios(): boolean {
-        return this.comentario != null;
+        return this.nro_comentario != null;
     }
 
     tieneReseñas(): boolean {
-        return this.review != null;
+        return this.nro_review != null;
     }
 
     includes(str: string){
         let searchStr: string = str.toLocaleLowerCase();
-        return this.especialidad.toLocaleLowerCase().includes(searchStr);
+        return this.especialidad.toLocaleLowerCase().includes(searchStr)
+            || this.estado.toLocaleLowerCase().includes(searchStr)
+            || this.dia.toLocaleLowerCase().includes(searchStr)
+            || this.hora.toLocaleLowerCase().includes(searchStr)
+            || this.Paciente().includes(searchStr)
+            || this.Especialista().includes(searchStr)
+            || this.HistoriaClinica()?.includes(searchStr);
     }
-
-
 
     static constructorArr(arr: any): Turno[] {
         return arr.map((i: Turno) => { return new Turno(
@@ -70,8 +117,8 @@ export class Turno {
             i.dia,
             i.hora,
             i.estado,
-            i.comentario,
-            i.review,
+            i.nro_comentario,
+            i.nro_review,
             i.nro_encuesta,
             i.calificacion,
             i.nro_historia_clinica,

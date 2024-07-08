@@ -71,7 +71,7 @@
                   <div class="radio-btn flex" *ngFor="let fecha of opcionesFechas|slice:
                         (paginator.pageIndex * paginator.pageSize) :
                         ((paginator.pageIndex+1)*paginator.pageSize)">
-                      <mat-radio-button [matBadge]="getCountFecha(fecha)" [value]="fecha">{{fecha}}</mat-radio-button>
+                      <mat-radio-button [matBadge]="getCountFecha(fecha)" [value]="fecha">{{fecha | toDate }}</mat-radio-button>
                   </div>
                   </mat-radio-group>
 
@@ -100,7 +100,7 @@
                   <div class="radio-btn flex" *ngFor="let hora of opcionesHoras|slice:
                         (paginatorHoras.pageIndex * paginatorHoras.pageSize) :
                         ((paginatorHoras.pageIndex+1)*paginatorHoras.pageSize)">
-                      <mat-radio-button [value]="hora">{{hora}}</mat-radio-button>
+                      <mat-radio-button [value]="hora">{{hora | toTime }}</mat-radio-button>
                   </div>
                   </mat-radio-group>
 
@@ -129,7 +129,7 @@
           <p><b>Horario:</b> {{ this.fourthStepForm.controls.hora.value }} </p>
           <div class="flexrow" [style.gap.px]="15" [style.margin-top.px]="25">
             <button mat-flat-button color="primary" matStepperPrevious>Anterior</button>
-            <button mat-flat-button color="primary" matStepperPrevious (click)="confirmarTurno()" [disabled]="sendingRequest">Confirmar</button>
+            <button mat-flat-button color="primary" matStepperPrevious (click)="confirmarTurno()" [disabled]="loader.getLoading()">Confirmar</button>
           </div>
         </mat-step>
       </mat-stepper>

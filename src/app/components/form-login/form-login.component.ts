@@ -13,6 +13,8 @@ import { NotifierService } from '../../services/notifier.service';
 import { DataUsuariosService } from '../../services/data-usuarios.service';
 import { Usuario } from '../../models/usuario';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DatabaseService } from '../../services/database.service';
+import { LoaderService } from '../../services/loader.service';
 
 
 @Component({
@@ -35,7 +37,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 
 export class FormLoginComponent {
-  usuarios!: Usuario[];
   email: string = '';
   password: string = '';
   rememberLogin: boolean = false;
@@ -43,7 +44,6 @@ export class FormLoginComponent {
   loginError: boolean = false;
   errorMessage: string = '';
   verifyError: boolean = false;
-  sendingRequest: boolean = false;
 
   quickAccessUsers: any[] = [
     {email: 'mr.robot@yopmail.com', pwd: 'sudor00t123'},
@@ -59,17 +59,13 @@ export class FormLoginComponent {
     public session: SessionService,
     private router: Router,
     private notifier: NotifierService,
-    private providerDataUsuarios: DataUsuariosService
-  ) {
-    this.providerDataUsuarios.fetchAll()
-    .subscribe((res) => {
-      this.usuarios = Usuario.constructorArr(res);
-    });
-  }
+    private DB: DatabaseService,
+    public loader: LoaderService
+  ) { }
 
   async Login() {
-    if (!this.sendingRequest){
-      this.sendingRequest = true;
+    if (!this.loader.getLoading()){
+      this.loader.setLoading(true);
       this.loginError = false;
       this.verifyError = false;
       this.errorMessage = '';
@@ -95,7 +91,7 @@ export class FormLoginComponent {
           }
         }
       ).then(() => {
-        this.sendingRequest = false;
+        this.loader.setLoading(false);
       });
     }
   }
@@ -112,13 +108,13 @@ export class FormLoginComponent {
   }
 
   getImgSrc(email: string){
-    let usuario = Usuario.filtrarUno(this.usuarios, email);
+    let usuario = Usuario.filtrarUno(this.DB.usuarios, email);
     return usuario ? usuario.imagenPerfil : null;
   }
 
   getTooltipTxt(email: string){
     let txt = '';
-    let usuario = Usuario.filtrarUno(this.usuarios, email);
+    let usuario = Usuario.filtrarUno(this.DB.usuarios, email);
     if (usuario){
       txt = usuario.fullName() + " - " + usuario.nivelUsuario;
     }

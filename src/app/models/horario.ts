@@ -17,10 +17,6 @@ export class Horario {
         this.hora = hora;
     }
 
-    displayDay(){
-        return this.diaDeSemana + " " + this.dia;
-    }
-
     static contarDias(arr: Horario[], dia: string){
         return arr.reduce((total, value) => { return value.dia == dia ? total + 1 : total }, 0);
     }

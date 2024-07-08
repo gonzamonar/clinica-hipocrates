@@ -1,7 +1,8 @@
+import { TipoUsuario } from "./enums/tipo-usuario";
 import { Usuario } from "./usuario";
 
 export class Especialista extends Usuario {
-    especialidad: string;
+    especialidad: string[];
     habilitado: boolean;
 
     constructor(
@@ -12,7 +13,7 @@ export class Especialista extends Usuario {
         email: string,
         imagenPerfil: string,
         nivelUsuario: string,
-        especialidad: string,
+        especialidad: string[],
         habilitado: boolean
     ) {
         super(nombre, apellido, edad, dni, email, imagenPerfil, nivelUsuario);
@@ -26,8 +27,8 @@ export class Especialista extends Usuario {
 
     static override constructorArr(arr: any[]): Especialista[] {
         return arr
-                .filter((e) => { return e['nivelUsuario'] == 'especialista';})
-                .map((e) => { return new Especialista(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario, e.especialidad, e.habilitado); });
+                .filter((e) => { return e['nivelUsuario'] == TipoUsuario.Especialista;})
+                .map((e) => { return new Especialista(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario, e.especialidad.split(','), e.habilitado); });
     }
 
     static filtrarHabilitados(arr: Especialista[]): Especialista[] {
@@ -35,7 +36,7 @@ export class Especialista extends Usuario {
     }
 
     static filtrarPorEspecialidad(arr: Especialista[], especialidad: string): Especialista[] {
-        return arr.filter((e: Especialista) => {return e.especialidad == especialidad})
+        return arr.filter((e: Especialista) => {return e.especialidad.includes(especialidad)})
     }
 
     static filtrarPorEmails(arr: Especialista[], emails: string[]): Especialista[] {
@@ -47,6 +48,10 @@ export class Especialista extends Usuario {
     }
     
     static getEspecialidades(arr: Especialista[]): string[] {
-        return arr.map((e: Especialista) => { return e.especialidad });
+        let especialidades: string[] = [];
+        arr.map((e: Especialista) => {
+            e.especialidad.map((i) => especialidades.push(i));
+        });
+        return especialidades;
     }
 }

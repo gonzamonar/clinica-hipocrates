@@ -13,8 +13,6 @@
         <app-card-turno
         *ngFor="let turno of turnosFiltrados"
         [turno]="turno"
-        [listaUsuarios]="usuarios"
-        [historiaClinica]="turno.nro_historia_clinica ? getHistoriaClinica(turno.nro_turno) : null"
         ></app-card-turno>
     </div>
 </div>

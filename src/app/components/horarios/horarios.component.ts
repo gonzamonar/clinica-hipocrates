@@ -21,16 +21,12 @@ import { CommonModule } from '@angular/common';
 })
 export class HorariosComponent {
   especialista: string = '';
-  especialidad: string = '';
-  especialidades: string[] = [];
 
   constructor(
     private session: SessionService
   ){    
     if(this.session.data && this.session.isSpecialistLevelSession()){
       this.especialista = this.session.data.email;
-      this.especialidades = this.session.getEspecialidades();
-      this.especialidad = this.especialidades[0];
     }
   }
 }

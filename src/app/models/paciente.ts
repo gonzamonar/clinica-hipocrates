@@ -1,3 +1,4 @@
+import { TipoUsuario } from "./enums/tipo-usuario";
 import { Usuario } from "./usuario";
 
 export class Paciente extends Usuario {
@@ -22,7 +23,7 @@ export class Paciente extends Usuario {
 
     static override constructorArr(arr: any[]): Paciente[] {
         return arr
-            .filter((e) => { return e['nivelUsuario'] == 'paciente';})
+            .filter((e) => { return e['nivelUsuario'] == TipoUsuario.Paciente;})
             .map((e) => { return new Paciente(e.nombre, e.apellido, e.edad, e.dni, e.email, e.imagenPerfil, e.nivelUsuario, e.obraSocial, e.imagenPerfilAlt); });
     }
 

@@ -52,7 +52,7 @@ export class SessionService {
               userdata = new Paciente(nombre, apellido, edad, dni, email, imagenPerfil, nivelUsuario, doc.obraSocial, doc.imagenPerfilAlt);
               break;
             case this.typeEspecialista:
-              userdata = new Especialista(nombre, apellido, edad, dni, email, imagenPerfil, nivelUsuario, doc.especialidad, doc.habilitado);
+              userdata = new Especialista(nombre, apellido, edad, dni, email, imagenPerfil, nivelUsuario, doc.especialidad.split(','), doc.habilitado);
               break;
             case this.typeAdmin:
               userdata = new Admin(nombre, apellido, edad, dni, email, imagenPerfil, nivelUsuario);
@@ -110,11 +110,11 @@ export class SessionService {
     return authorized;
   }
 
-  getEspecialidades(): string[] {
-    let especialidades: string[] = [];
-    if (this.isSpecialistLevelSession()){
-      especialidades = <string[]> (<Especialista>this.data).especialidad.split(',');
-    }
-    return especialidades;
-  }
+  // getEspecialidades(): string[] {
+  //   let especialidades: string[] = [];
+  //   if (this.isSpecialistLevelSession()){
+  //     especialidades = <string[]> (<Especialista>this.data).especialidad;
+  //   }
+  //   return especialidades;
+  // }
 }

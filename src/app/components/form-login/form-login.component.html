@@ -29,7 +29,7 @@
       </div>
 
       <div class="flex">
-        <button mat-flat-button color="primary" class="btn-submit" type="submit" [disabled]="this.sendingRequest" (click)="Login()">
+        <button mat-flat-button color="primary" class="btn-submit" type="submit" [disabled]="loader.getLoading()" (click)="Login()">
           <mat-icon>key</mat-icon>
           Login
         </button>

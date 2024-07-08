@@ -2,15 +2,8 @@
 <div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
     <h2 [style.margin-bottom.px]="40">Selección de Horarios</h2>
     <div class="w-100 flex">
-        <mat-form-field *ngIf="especialidades.length > 0" appearance="outline">
-            <mat-label>Especialidad</mat-label>
-            <mat-select [(ngModel)]="especialidad">
-              <mat-option *ngFor="let especialidad of especialidades" value="{{especialidad}}"> {{ especialidad }}</mat-option>
-            </mat-select>
-        </mat-form-field>
         <app-selector-horarios
         [especialista]="especialista"
-        [especialidad]="especialidad"
         ></app-selector-horarios>
     </div>
 </div>

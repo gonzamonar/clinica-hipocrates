@@ -44,7 +44,7 @@ export class PerfilComponent {
     let value = '';
     if (this.session.data != null && this.session.isSpecialistLevelSession()) {
       let data = <Especialista> this.session.data;
-      value = data.especialidad;
+      value = data.especialidad.join(",");
     }
     return value;
   }

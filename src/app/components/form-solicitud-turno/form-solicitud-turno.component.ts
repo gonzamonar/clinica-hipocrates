@@ -21,6 +21,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
+import { ToTimePipe } from '../../pipes/to-time.pipe';
+import { ToDatePipe } from '../../pipes/to-date.pipe';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-form-solicitud-turno',
@@ -36,7 +39,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatSelectModule,
     MatInputModule,
     MatRadioModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ToTimePipe,
+    ToDatePipe
   ],
   templateUrl: './form-solicitud-turno.component.html',
   styleUrls: ['../form-styles.css', './form-solicitud-turno.component.css']
@@ -52,7 +57,6 @@ export class FormSolicitudTurnoComponent implements OnInit {
   opcionesHorarios!: Horario[];
   opcionesFechas!: string[];
   opcionesHoras!: string[];
-  sendingRequest: boolean = false;
 
   zeroStepForm = this._formBuilder.group({
     paciente: ['', Validators.required],
@@ -79,12 +83,13 @@ export class FormSolicitudTurnoComponent implements OnInit {
   @ViewChild(MatStepper) stepper!: MatStepper;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    public loader: LoaderService,
     public session: SessionService,
+    private _formBuilder: FormBuilder,
     private providerDataUsuarios: DataUsuariosService,
     private providerDataHorarios: DataHorariosService,
     private providerDataTurnos: DataTurnosService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
   ) {}
 
 
@@ -130,7 +135,7 @@ export class FormSolicitudTurnoComponent implements OnInit {
 
     if ($event.value != undefined && especialidad != null) {
       this.selectedEspecialista = Especialista.filtrarUno(this.especialistas, $event.value);
-      this.providerDataHorarios.fetchOne(this.selectedEspecialista.email, especialidad).then(
+      this.providerDataHorarios.fetchOne(this.selectedEspecialista.email).then(
         (data) => {
           this.opcionesHorarios = this.providerDataHorarios.crearArrayHorarios(
             data.horarios.split(","),
@@ -138,7 +143,7 @@ export class FormSolicitudTurnoComponent implements OnInit {
           )
           this.opcionesHorarios = this.providerDataHorarios.quitarHorariosUsados(this.opcionesHorarios, $event.value, especialidad);
 
-          this.opcionesFechas = this.opcionesHorarios.map((h) => { return h.displayDay(); });
+          this.opcionesFechas = this.opcionesHorarios.map((h) => { return h.dia; });
           this.opcionesFechas = [...new Set(this.opcionesFechas)];
           this.paginator.length = this.opcionesFechas.length;
         });
@@ -152,20 +157,17 @@ export class FormSolicitudTurnoComponent implements OnInit {
     this.fourthStepForm.controls.hora.reset();
     
     if ($event.value != undefined) {
-      this.opcionesHoras = this.opcionesHorarios.filter((i) => { return i.dia == $event.value.split(" ")[1] }).map((i) => { return i.hora; });
+      this.opcionesHoras = this.opcionesHorarios.filter((i) => { return i.dia == $event.value }).map((i) => { return i.hora; });
       this.paginatorHoras.length = this.opcionesHoras.length;
     }
   }
 
-
-  getCountFecha(fecha: string){
-    let dia = fecha.split(" ")[1];
+  getCountFecha(dia: string){
     return Horario.contarDias(this.opcionesHorarios, dia);
   }
 
-
   confirmarTurno(){
-    this.sendingRequest = true;
+    this.loader.setLoading(true);
 
     if (this.session.isPatientLevelSession() && this.session.data != null && this.session.data != undefined){
       this.zeroStepForm.controls.paciente.setValue(this.session.data?.email);
@@ -182,7 +184,7 @@ export class FormSolicitudTurnoComponent implements OnInit {
       let paciente = this.zeroStepForm.controls.paciente.value;
       let especialidad = this.firstStepForm.controls.especialidad.value;
       let especialista = this.secondStepForm.controls.especialista.value;
-      let fecha = this.thirdStepForm.controls.fecha.value.split(" ")[1];
+      let fecha = this.thirdStepForm.controls.fecha.value;
       let hora = this.fourthStepForm.controls.hora.value;
 
       let turno = new Turno(
@@ -194,6 +196,7 @@ export class FormSolicitudTurnoComponent implements OnInit {
         hora
       );
 
+      
       this.providerDataTurnos.pushOne(turno)
       .then(
         (res) => {
@@ -203,11 +206,11 @@ export class FormSolicitudTurnoComponent implements OnInit {
           } else {
             this.notifier.popUpNotification("No se pudo confirmar el turno, inténtelo nuevamente.");
           }
-          this.sendingRequest = false;
+          this.loader.setLoading(false);
         })
       } else {
       this.notifier.popUpNotification("Ha ocurrido un error en los campos ingresados.");
-      this.sendingRequest = false;
+      this.loader.setLoading(false);
     }
   }
 }

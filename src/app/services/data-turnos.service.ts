@@ -4,6 +4,8 @@ import { take } from 'rxjs';
 import { Turno } from '../models/turno';
 import { NotifierService } from './notifier.service';
 import { Estado } from '../models/enums/estado';
+import { Comentario } from '../models/comentario';
+import { DataComentariosService } from './data-comentarios.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +35,8 @@ export class DataTurnosService {
         'paciente': turno.paciente,
         'dia': turno.dia,
         'hora': turno.hora,
-        'comentario': turno.comentario,
-        'review': turno.review,
+        'nro_comentario': turno.nro_comentario,
+        'nro_review': turno.nro_review,
         'nro_encuesta': turno.nro_encuesta,
         'calificacion': turno.calificacion,
       });
@@ -48,37 +50,25 @@ export class DataTurnosService {
     return success;
   }
 
-  async cancelarTurno(turno: Turno, comentario: string): Promise<void> {
-    if (comentario != ''){
-      turno.comentario = comentario;
-      this.updateStatus(turno, Estado.Cancelado);
-    }
+  async cancelarTurno(turno: Turno): Promise<void> {
+    this.updateStatus(turno, Estado.Cancelado);
   }
 
   async aceptarTurno(turno: Turno): Promise<void> {
     this.updateStatus(turno, Estado.Aceptado);
   }
 
-  async rechazarTurno(turno: Turno, comentario: string): Promise<void> {
-    if (comentario != ''){
-      turno.comentario = comentario;
-      this.updateStatus(turno, Estado.Rechazado);
-    }
+  async rechazarTurno(turno: Turno): Promise<void> {
+    this.updateStatus(turno, Estado.Rechazado);
   }
 
   async finalizarTurno(turno: Turno): Promise<void> {
     this.updateStatus(turno, Estado.Realizado);
   }
 
-  async calificarTurno(turno: Turno, comentario: string, calificacion: number): Promise<void> {
-    turno.comentario = comentario;
+  async calificarTurno(turno: Turno, calificacion: number): Promise<void> {
     turno.calificacion = calificacion;
-    this.updateTurno(turno);
-  }
-
-  async agregarReviewTurno(turno: Turno, review: string): Promise<void> {
-    turno.review = review;
-    this.updateTurno(turno);
+    this.updateCalificacionTurno(turno);
   }
 
   private async updateStatus(turno: Turno, estado: string): Promise<void> {
@@ -93,14 +83,13 @@ export class DataTurnosService {
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, {
         'estado': estado,
-        'comentario': turno.comentario,
       });
       
       this.notifier.popUpNotification("Estado del turno actualizado exitosamente.")
     });
   }
 
-  private async updateTurno(turno: Turno): Promise<void> {
+  private async updateCalificacionTurno(turno: Turno): Promise<void> {
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -112,8 +101,6 @@ export class DataTurnosService {
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, {
         'calificacion': turno.calificacion,
-        'review': turno.review,
-        'comentario': turno.comentario,
       });
     });
   }
@@ -130,6 +117,38 @@ export class DataTurnosService {
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, {
         'nro_encuesta': nro_encuesta,
+      });
+    });
+  }
+
+  public async updateTurnoNroComentario(nro_turno: number, nro_comentario: number): Promise<void> {
+    let col = collection(this.firestore, this.TABLE);
+    const fetchQuery = query(
+      col, 
+      where("nro_turno", "==", nro_turno),
+      limit(1),
+    );
+
+    const querySnapshot = await getDocs(fetchQuery);
+    querySnapshot.forEach((doc) => {
+      updateDoc(doc.ref, {
+        'nro_comentario': nro_comentario,
+      });
+    });
+  }
+
+  public async updateTurnoNroReview(nro_turno: number, nro_review: number): Promise<void> {
+    let col = collection(this.firestore, this.TABLE);
+    const fetchQuery = query(
+      col, 
+      where("nro_turno", "==", nro_turno),
+      limit(1),
+    );
+
+    const querySnapshot = await getDocs(fetchQuery);
+    querySnapshot.forEach((doc) => {
+      updateDoc(doc.ref, {
+        'nro_review': nro_review,
       });
     });
   }

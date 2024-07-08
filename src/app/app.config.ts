@@ -9,6 +9,10 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ToTimePipe } from './pipes/to-time.pipe';
+import { ToDatePipe } from './pipes/to-date.pipe';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -19,7 +23,9 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // provideClientHydration(), 
+    // provideClientHydration(),
+    ToDatePipe,
+    ToTimePipe,
     provideRouter(routes), 
     provideFirebaseApp(
       () => initializeApp({
@@ -35,7 +41,8 @@ export const appConfig: ApplicationConfig = {
     provideStorage(() => getStorage()),
     provideNativeDateAdapter(),
     { provide: LOCALE_ID, useValue: 'es-AR' },
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ]
 };
 

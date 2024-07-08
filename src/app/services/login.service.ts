@@ -23,14 +23,26 @@ export class LoginService {
   ) { }
 
   async Register(email: string, pwd: string) {
-    let registerError: any = { error: true, msg: "No pudo realizarse el registro." };;
+    let registerError: any = { error: true, msg: "No pudo realizarse el registro." };
+    let currentUser = this.auth.currentUser;
+    let restoreSession: boolean = false;
+    if (this.session.isAdminLevelSession()){
+      restoreSession = true;
+    }
 
     return createUserWithEmailAndPassword(this.auth, email, pwd)
     .then(
       (response) => {
         if(response.user.email !== null) {
           registerError = { error: false, msg: "Registro exitoso." };
-          sendEmailVerification(response.user);
+          sendEmailVerification(response.user).then(() => {
+            signOut(this.auth).then(() => {
+              if (restoreSession){
+                this.auth.updateCurrentUser(currentUser);
+              }
+            }
+            );
+          });
         }
       }).catch((e) => {
         if (e.code == "auth/email-already-in-use" ||

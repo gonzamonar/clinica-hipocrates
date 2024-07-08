@@ -24,15 +24,14 @@ export class DataHorariosService {
     });
   }
 
-  async pushOne(horarios: string, especialista: string, especialidad: string): Promise<boolean> {
+  async pushOne(horarios: string, especialista: string): Promise<boolean> {
     let success = false;
     let dataCollection = collection(this.firestore, this.TABLE);
 
-    await this.deleteOne(especialista, especialidad);
+    await this.deleteOne(especialista);
     
     let status = await addDoc(dataCollection, {
       'especialista': especialista,
-      'especialidad': especialidad,
       'horarios': horarios,
     });
     
@@ -43,12 +42,11 @@ export class DataHorariosService {
     return success;
   }
 
-  async deleteOne(especialista: string, especialidad: string){
+  async deleteOne(especialista: string){
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
       where("especialista", "==", especialista),
-      where("especialidad", "==", especialidad),
       limit(1),
     );
     const querySnapshot = await getDocs(fetchQuery);
@@ -57,12 +55,11 @@ export class DataHorariosService {
     });
   }
   
-  async fetchOne(especialista: string, especialidad: string): Promise<any> {
+  async fetchOne(especialista: string): Promise<any> {
       let col = collection(this.firestore, this.TABLE);
       const fetchQuery = query(
         col, 
         where("especialista", "==", especialista),
-        where("especialidad", "==", especialidad),
         limit(1),
       );
       const querySnapshot = await getDocs(fetchQuery);

@@ -1,3 +1,5 @@
+import { TipoUsuario } from "./enums/tipo-usuario";
+
 export class Usuario {
     nombre: string;
     apellido: string;
@@ -26,13 +28,29 @@ export class Usuario {
         this.nivelUsuario = nivelUsuario;
     }
 
+    esPaciente(): boolean {
+        return this.nivelUsuario == TipoUsuario.Paciente;
+    }
+
+    esEspecialista(): boolean {
+        return this.nivelUsuario == TipoUsuario.Especialista;
+    }
+
+    esAdmin(): boolean {
+        return this.nivelUsuario == TipoUsuario.Admin;
+    }
+
     fullName(): string{
         return this.nombre + " " + this.apellido;
     }
 
-    includes(str: string): boolean {
-        let searchStr: string = str.toLocaleLowerCase();
-        return this.fullName().toLocaleLowerCase().includes(searchStr);
+    toString(): string {
+        return this.fullName();
+    }
+
+    includes(searchStr: string): boolean {
+        let str: string = searchStr.toLocaleLowerCase();
+        return this.fullName().toLocaleLowerCase().includes(str);
     }
 
     static constructorArr(arr: any[]): Usuario[] {

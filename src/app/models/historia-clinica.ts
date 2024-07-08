@@ -1,4 +1,8 @@
+import { DatabaseService } from "../services/database.service";
 import { DatoDinamico } from "./dato-dinamico";
+import { Especialista } from "./especialista";
+import { Paciente } from "./paciente";
+import { Turno } from "./turno";
 
 export class HistoriaClinica {
     nro_historia_clinica: number;
@@ -39,6 +43,21 @@ export class HistoriaClinica {
         this.datoDinamico3 = datoDinamico3;
     }
 
+    Especialista(): Especialista {
+        const DB = DatabaseService.instance;
+        return Especialista.filtrarUno(DB.especialistas, this.especialista);
+    }
+    
+    Paciente(): Paciente {
+        const DB = DatabaseService.instance;
+        return Paciente.filtrarUno(DB.pacientes, this.paciente);
+    }
+    
+    Turno(): Turno {
+        const DB = DatabaseService.instance;
+        return Turno.filtrarUno(DB.turnos, this.nro_turno);
+    }
+
     static constructorArr(arr: any): HistoriaClinica[] {
         return arr.map((hc: any) => { return new HistoriaClinica(
             parseInt(hc.nro_historia_clinica),
@@ -53,6 +72,10 @@ export class HistoriaClinica {
             hc.datoDinamico2 ? DatoDinamico.fromString(hc.datoDinamico2) : null,
             hc.datoDinamico3 ? DatoDinamico.fromString(hc.datoDinamico3) : null,
         ) });
+    }
+
+    static filtrarUno(arr: HistoriaClinica[], nro_historia_clinica: number): HistoriaClinica {
+        return arr.filter((hc) => { return hc.nro_historia_clinica == nro_historia_clinica })[0];
     }
 
     static filtrarPorTurno(arr: HistoriaClinica[], nro_turno: number): HistoriaClinica {
@@ -71,6 +94,11 @@ export class HistoriaClinica {
         let includes: boolean = false;
         let searchStr: string = str.toLocaleLowerCase();
         includes ||= ['peso', 'altura', 'temperatura', 'presion', 'presión'].map((str) => { return str.includes(searchStr)}).reduce((a,b) => { return a || b }, false);
+
+        includes ||= this.peso.toLocaleString().includes(searchStr);
+        includes ||= this.altura.toLocaleString().includes(searchStr);
+        includes ||= this.temperatura.toLocaleString().includes(searchStr);
+        includes ||= this.presion.toLocaleString().includes(searchStr);
 
         if (this.datoDinamico1){
             includes ||= this.datoDinamico1.includes(searchStr);

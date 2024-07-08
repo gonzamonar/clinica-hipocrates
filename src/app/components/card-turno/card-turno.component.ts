@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { AfterContentChecked, Component, Input, inject } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SessionService } from '../../services/session.service';
 import { IconDefinition, faBan, faCircleCheck, faFlagCheckered, faHourglass, faStar, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -28,6 +28,12 @@ import { HistoriaClinica } from '../../models/historia-clinica';
 import { DatoDinamico } from '../../models/dato-dinamico';
 import { MatChipsModule } from '@angular/material/chips';
 import { ToTitleCasePipe } from '../../pipes/to-title-case.pipe';
+import { DatabaseService } from '../../services/database.service';
+import { Comentario } from '../../models/comentario';
+import { TipoComentario } from '../../models/enums/tipo-comentario';
+import { DataComentariosService } from '../../services/data-comentarios.service';
+import { ToDatePipe } from '../../pipes/to-date.pipe';
+import { ToTimePipe } from '../../pipes/to-time.pipe';
 
 @Component({
   selector: 'app-card-turno',
@@ -41,16 +47,18 @@ import { ToTitleCasePipe } from '../../pipes/to-title-case.pipe';
     MatButtonModule,
     MatDialogModule,
     MatChipsModule,
-    ToTitleCasePipe
+    ToTitleCasePipe,
+    ToDatePipe,
+    ToTimePipe
   ],
   templateUrl: './card-turno.component.html',
   styleUrl: './card-turno.component.css'
 })
 
-export class CardTurnoComponent {
+export class CardTurnoComponent implements AfterContentChecked {
   @Input() turno!: Turno;
-  @Input() historiaClinica: HistoriaClinica | null = null;
-  @Input() listaUsuarios: Usuario[] = [];
+  historiaClinica: HistoriaClinica | null = null;
+  
   readonly dialog = inject(MatDialog);
   iconStar: IconDefinition = faStar;
 
@@ -58,31 +66,31 @@ export class CardTurnoComponent {
     private session: SessionService,
     private notifier: NotifierService,
     private providerDataTurnos: DataTurnosService,
-    private providerDataHistoriaClinica: DataHistoriaClinicaService
+    private providerDataHistoriaClinica: DataHistoriaClinicaService,
+    private providerDataComentarios: DataComentariosService,
+    private DB: DatabaseService
   ){ }
+
+  ngAfterContentChecked(): void {
+    if (this.turno != null && this.turno.nro_historia_clinica != null){
+      this.historiaClinica = this.turno.HistoriaClinica();
+    }
+  }
   
   displayTooltipCalificacion(calificacion: number | null){
     return calificacion == null ? "Calificación pendiente" : "Calificación del paciente" ;
   }
 
-  displayTooltipComentario(comentario: string | null){
+  displayTooltipComentario(comentario: number | null){
     return comentario == null ? "Todavía no se han agregado comentarios." : "Ver Comentarios" ;
   }
 
-  displayTooltipReview(review: string | null){
+  displayTooltipReview(review: number | null){
     return review == null ? "Todavía no se ha agregado una reseña." : "Ver Reseña del Especialista" ;
   }
 
   displayTooltipEncuesta(encuesta: number | null){
     return encuesta == null ? "La encuesta aún no ha sido realizada." : "Ver Encuesta realizada por el Paciente" ;
-  }
-
-  getNombreUsuario(usuario: string){
-    let fullName = '';
-    if (usuario != undefined && usuario != null && this.listaUsuarios != undefined){
-      fullName = Usuario.filtrarUno(this.listaUsuarios, usuario).fullName();
-    }
-    return fullName;
   }
 
   getStatusIcon(status: string){
@@ -146,7 +154,7 @@ export class CardTurnoComponent {
   }
 
   displayCompleteQuizBtn(turno: Turno): boolean {
-    return (this.session.isPatientLevelSession() && turno.review != null && turno.estado == Estado.Realizado);
+    return (this.session.isPatientLevelSession() && turno.nro_review != null && turno.estado == Estado.Realizado);
   }
 
   displayCalificationBtn(turno: Turno): boolean {
@@ -154,7 +162,7 @@ export class CardTurnoComponent {
   }
 
   displayCompleteReviewBtn(turno: Turno): boolean {
-    return (this.session.isSpecialistLevelSession() && turno.review == null && turno.estado == Estado.Realizado);
+    return (this.session.isSpecialistLevelSession() && turno.nro_review == null && turno.estado == Estado.Realizado);
   }
 
   displayUpdateClinicHistoryBtn(turno: Turno): boolean {
@@ -169,29 +177,33 @@ export class CardTurnoComponent {
     return !(turno.estado == Estado.Cancelado || turno.estado == Estado.Rechazado);
   }
 
-  showComment(comentario: string | null){
-    if (comentario != null && comentario != undefined){
-      let comentador = Usuario.filtrarUno(this.listaUsuarios, comentario.split(" -- ", 2)[0]);
+  showComment(nro_comentario: number | null){
+    if (nro_comentario != null && nro_comentario != undefined){
+      let comentario = Comentario.filtrarUno(this.DB.comentarios, nro_comentario);
+      let comentador = Usuario.filtrarUno(this.DB.usuarios, comentario.comentador);
       this.dialog.open(DialogComentarioTurnoComponent,
         { data : {
           usuario: comentador.fullName(),
           tipo: comentador.nivelUsuario,
           foto: comentador.imagenPerfil,
-          comentario: comentario.split(" -- ", 2)[1],
+          motivo: comentario.motivo,
+          comentario: comentario.comentario,
         }}
       );
     }
   }
 
-  showReview(review: string | null){
-    if (review != null && review != undefined){
-      let comentador = Usuario.filtrarUno(this.listaUsuarios, review.split(" -- ", 2)[0]);
+  showReview(nro_review: number | null){
+    if (nro_review != null && nro_review != undefined){
+      let review = Comentario.filtrarUno(this.DB.comentarios, nro_review);
+      let comentador = review.Comentador();
       this.dialog.open(DialogComentarioTurnoComponent,
         { data : {
           usuario: comentador.fullName(),
           tipo: comentador.nivelUsuario,
           foto: comentador.imagenPerfil,
-          comentario: review.split(" -- ", 2)[1],
+          motivo: review.motivo,
+          comentario: review.comentario,
         }}
       );
     }
@@ -214,10 +226,19 @@ export class CardTurnoComponent {
 
     dialogRef.afterClosed()
     .pipe(take(1))
-    .subscribe((comentario) => {
-      if(comentario != undefined){
-        if (comentario != ''){
-          this.providerDataTurnos.cancelarTurno(turno, this.session.data?.email + " -- Motivo de cancelación: " + comentario);
+    .subscribe((response) => {
+      if(response != undefined){
+        if (response != '' && this.session.data){
+          let comentario = new Comentario(
+            0,
+            turno.nro_turno,
+            TipoComentario.Comentario,
+            this.session.data.email,
+            "Motivo de cancelación",
+            response
+          )
+          this.providerDataTurnos.cancelarTurno(turno);
+          this.providerDataComentarios.agregarComentario(comentario);
         } else {
           this.notifier.alert("El comentario es obligatorio", "Debe agregar un comentario a la cancelación", "error");
         }
@@ -230,10 +251,19 @@ export class CardTurnoComponent {
 
     dialogRef.afterClosed()
     .pipe(take(1))
-    .subscribe((comentario) => {
-      if(comentario != undefined){
-        if (comentario != ''){
-          this.providerDataTurnos.rechazarTurno(turno, this.session.data?.email + " -- Motivo de rechazo: " + comentario);
+    .subscribe((response) => {
+      if(response != undefined){
+        if (response != '' && this.session.data){
+          let comentario = new Comentario(
+            0,
+            turno.nro_turno,
+            TipoComentario.Comentario,
+            this.session.data.email,
+            "Motivo de rechazo",
+            response
+          )
+          this.providerDataTurnos.rechazarTurno(turno);
+          this.providerDataComentarios.agregarComentario(comentario);
         } else {
           this.notifier.alert("El comentario es obligatorio", "Debe agregar un comentario al rechazo del turno", "error");
         }
@@ -259,8 +289,17 @@ export class CardTurnoComponent {
     dialogRef.afterClosed()
     .pipe(take(1))
     .subscribe((result) => {
-      if (result.comentario != '' && result.rating != 0) {
-        this.providerDataTurnos.calificarTurno(turno, this.session.data?.email + " -- Comentario de calificación: " + result.comentario, parseInt(result.rating));
+      if (result.comentario != '' && result.rating != 0 && this.session.data) {
+        let comentario = new Comentario(
+          0,
+          turno.nro_turno,
+          TipoComentario.Comentario,
+          this.session.data.email,
+          "Comentario de calificación",
+          result.comentario
+        )
+        this.providerDataTurnos.calificarTurno(turno, parseInt(result.rating));
+        this.providerDataComentarios.agregarComentario(comentario);
       }
     });
   }
@@ -270,11 +309,17 @@ export class CardTurnoComponent {
 
     dialogRef.afterClosed()
     .pipe(take(1))
-    .subscribe((review) => {
-      if(review != undefined){
-        if (review != ''){
-          this.providerDataTurnos.agregarReviewTurno(turno, this.session.data?.email + " -- Reseña del turno: " + review);
-        }
+    .subscribe((response) => {
+      if(response != undefined && response != '' && this.session.data){
+        let review = new Comentario(
+          0,
+          turno.nro_turno,
+          TipoComentario.Review,
+          this.session.data.email,
+          "Reseña del turno",
+          response
+        )
+        this.providerDataComentarios.agregarComentario(review);
       }
     });
   }
@@ -290,10 +335,7 @@ export class CardTurnoComponent {
     .pipe(take(1))
     .subscribe((response) => {
       if (response){
-        let dato1 = response.dato1clave != '' && response.dato1valor != '' ? new DatoDinamico(response.dato1clave, response.dato1valor) : null ;
-        let dato2 = response.dato2clave != '' && response.dato2valor != '' ? new DatoDinamico(response.dato2clave, response.dato2valor) : null ;
-        let dato3 = response.dato3clave != '' && response.dato3valor != '' ? new DatoDinamico(response.dato3clave, response.dato3valor) : null ;
-  
+
         let historia = new HistoriaClinica(
           0,
           turno.nro_turno,
@@ -303,9 +345,9 @@ export class CardTurnoComponent {
           parseInt(response.peso),
           parseInt(response.temperatura),
           parseInt(response.presion),
-          dato1,
-          dato2,
-          dato3
+          this.buildDato(response.dato1clave, response.dato1valor),
+          this.buildDato(response.dato2clave, response.dato2valor),
+          this.buildDato(response.dato3clave, response.dato3valor),
         );
         
         if (historia){
@@ -313,6 +355,10 @@ export class CardTurnoComponent {
         }
       }
     });
+  }
+
+  buildDato(clave: string, valor: string){
+    return clave != '' && valor != '' ? new DatoDinamico(clave, valor) : null ;
   }
 
 }
