@@ -9,7 +9,6 @@ import { DataTurnosService } from './data-turnos.service';
 })
 export class DataHistoriaClinicaService {
   private TABLE: string = 'historiaClinica';
-
   private nextId: number = 0;
 
   constructor(

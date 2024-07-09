@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData, orderBy, query } from '@angular/fire/firestore';
+import { DatabaseService } from './database.service';
+import { Especialidad } from '../models/especialidad';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataEspecialidadesService {
-
-  public dataCollection: any[] = [];
+  private TABLE: string = 'especialidades';
 
   constructor(
     private firestore: Firestore
-  ) {
-    this.fetchAll();
-  }
+  ) { }
 
-  async pushOne(especialidad: string): Promise<boolean> {
-    let mappedEspecialidades = this.dataCollection.map((e) => { return e.especialidad; });
+  async pushOne(especialidad: string, especialidades: Especialidad[]): Promise<boolean> {
+    let mappedEspecialidades = especialidades.map((e) => { return e.especialidad; });
     let success = false;
 
     if (!mappedEspecialidades.includes(especialidad)) {
-      let dataCollection = collection(this.firestore, 'especialidades');
+      let dataCollection = collection(this.firestore,  this.TABLE);
       
       let status = await addDoc(dataCollection, {
         'especialidad': especialidad,
@@ -35,15 +34,12 @@ export class DataEspecialidadesService {
   }
   
   fetchAll(){
-    let col = collection(this.firestore, 'especialidades');
+    let col = collection(this.firestore, this.TABLE);
     const sortedQuery = query(
       col,
       orderBy('especialidad', 'asc')
     );
     const observable = collectionData(sortedQuery);
-
-    observable.subscribe((response) => {
-      this.dataCollection = response;
-    });
+    return observable;
   }
 }

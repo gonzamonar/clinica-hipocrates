@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, deleteDoc, getDocs, limit, orderBy, query, where } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, deleteDoc, getDocs, limit, orderBy, query, where } from '@angular/fire/firestore';
 import { Horario } from '../models/horario';
-import { DataTurnosService } from './data-turnos.service';
 import { Turno } from '../models/turno';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +11,11 @@ export class DataHorariosService {
   TABLE: string = 'horarios';
   weekDays: string[] = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
   dayInMillis: number = 86400000;
-  turnos!: Turno[];
 
   constructor(
     private firestore: Firestore,
-    private providerDataTurnos: DataTurnosService
-  ) {
-    this.fetchAll();
-    this.providerDataTurnos.fetchAll().subscribe(
-      (res) => {
-        this.turnos = Turno.constructorArr(res);
-    });
-  }
+    private DB: DatabaseService
+  ) { }
 
   async pushOne(horarios: string, especialista: string): Promise<boolean> {
     let success = false;
@@ -106,11 +99,12 @@ export class DataHorariosService {
     return dates;
   }
 
-  quitarHorariosUsados(horarios: Horario[], especialista: string, especialidad: string): Horario[] {
-    this.turnos.filter((i) => { return i.especialista == especialista && i.especialidad == especialidad});
-    this.turnos.forEach((i) =>{
-      horarios = horarios.filter((h) => { return !(h.dia == i.dia && h.hora == i.hora) });
-    });
+  quitarHorariosUsados(horarios: Horario[], especialista: string): Horario[] {
+    this.DB.turnos
+      .filter((i: Turno) => { return i.especialista == especialista })
+      .forEach((i) =>{
+        horarios = horarios.filter((h) => { return !(h.dia == i.dia && h.hora == i.hora) });
+      });
     return horarios;
   }
 }

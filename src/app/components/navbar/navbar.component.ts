@@ -65,9 +65,11 @@ export class NavbarComponent implements AfterViewInit {
       });
     }
 
-    let observer = new IntersectionObserver(callback, options);
-
-    observer.observe(this.spot.nativeElement);
+    // @if = Solution for server side "ERROR ReferenceError: IntersectionObserver is not defined"
+    if (typeof IntersectionObserver !== 'undefined') {
+      let observer = new IntersectionObserver(callback, options);
+      observer.observe(this.spot.nativeElement);
+    }
   }
 
   cerrarSesion(){

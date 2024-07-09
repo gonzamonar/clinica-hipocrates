@@ -12,6 +12,10 @@ import { Comentario } from '../models/comentario';
 import { DataComentariosService } from './data-comentarios.service';
 import { ExcelService } from './excel.service';
 import { NotifierService } from './notifier.service';
+import { Especialidad } from '../models/especialidad';
+import { DataEspecialidadesService } from './data-especialidades.service';
+import { Horario } from '../models/horario';
+import { DataHorariosService } from './data-horarios.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +26,7 @@ export class DatabaseService {
   usuarios: Usuario[] = [];
   pacientes: Paciente[] = [];
   especialistas: Especialista[] = [];
+  especialidades: Especialidad[] = [];
   admins: Admin[] = [];
   turnos: Turno[] = [];
   comentarios: Comentario[] = [];
@@ -32,6 +37,7 @@ export class DatabaseService {
     private providerDataTurnos: DataTurnosService,
     private providerDataHistoriaClinica: DataHistoriaClinicaService,
     private providerDataComentarios: DataComentariosService,
+    private providerDataEspecialidades: DataEspecialidadesService,
     private ExcelService: ExcelService,
     private notifier: NotifierService
   ) {
@@ -48,6 +54,11 @@ export class DatabaseService {
     this.providerDataTurnos.fetchAll().subscribe(
       (res) => {
         this.turnos = Turno.constructorArr(res);
+    });
+
+    this.providerDataEspecialidades.fetchAll().subscribe(
+      (res) => {
+        this.especialidades = Especialidad.constructorArr(res);
     });
 
     this.providerDataHistoriaClinica.fetchAll().subscribe(

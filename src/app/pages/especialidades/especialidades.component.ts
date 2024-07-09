@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { DataUsuariosService } from '../../services/data-usuarios.service';
 import { Usuario } from '../../models/usuario';
 import { Especialista } from '../../models/especialista';
+import { DatabaseService } from '../../services/database.service';
+import { Especialidad } from '../../models/especialidad';
 
 @Component({
   selector: 'app-especialidades',
@@ -18,10 +20,10 @@ import { Especialista } from '../../models/especialista';
 })
 export class EspecialidadesComponent {
   assetsDir: string = '/assets/img/especialidades/';
-  dataEspecialidades!: any[];
+  dataEspecialidades!: Especialidad[];
 
   constructor (
-    private dataProviderEspecialidades: DataEspecialidadesService,
+    private DB: DatabaseService,
     private dataProviderUsuarios: DataUsuariosService
   ){
     dataProviderUsuarios.fetchAll().subscribe(
@@ -29,7 +31,7 @@ export class EspecialidadesComponent {
         if (res){
           let especialidades = Especialista.getEspecialidades(Especialista.filtrarHabilitados(Especialista.constructorArr(res)));
           especialidades = [...new Set(especialidades)];
-          this.dataEspecialidades = dataProviderEspecialidades.dataCollection.filter((i) => { return especialidades.includes(i.especialidad) });
+          this.dataEspecialidades = DB.especialidades.filter((e: Especialidad) => { return especialidades.includes(e.especialidad) });
         }
     });
   }

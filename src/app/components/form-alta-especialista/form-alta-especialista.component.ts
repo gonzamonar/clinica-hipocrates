@@ -14,6 +14,7 @@ import { DataUsuariosService } from '../../services/data-usuarios.service';
 import { Especialista } from '../../models/especialista';
 import { ToTitleCaseDirective } from '../../directives/to-title-case.directive';
 import { NotifierService } from '../../services/notifier.service';
+import { DatabaseService } from '../../services/database.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class FormAltaEspecialistaComponent implements OnInit {
   constructor (
     public formViewer: FormViewerService,
     public dataEspecialidades: DataEspecialidadesService,
+    public DB: DatabaseService,
     private providerDataUsuarios: DataUsuariosService,
     private loginService: LoginService,
     private notifier: NotifierService
@@ -108,7 +110,7 @@ export class FormAltaEspecialistaComponent implements OnInit {
     
     if (nuevaEspecialidad?.valid && nuevaEspecialidad.value != null && nuevaEspecialidad.value != "" && !this.addTriggered) {
       this.addTriggered = true;
-      let result = await this.dataEspecialidades.pushOne(nuevaEspecialidad.value);
+      let result = await this.dataEspecialidades.pushOne(nuevaEspecialidad.value, this.DB.especialidades);
       if (result) {
         this.notifier.popUpNotification("Especialidad agregada exitosamente.");
       } else {

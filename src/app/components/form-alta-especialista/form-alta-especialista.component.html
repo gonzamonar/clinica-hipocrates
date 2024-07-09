@@ -7,7 +7,7 @@
             <mat-label>Especialidad</mat-label>
             <mat-select formControlName="especialidad">
               <mat-option>-- Sin seleccionar --</mat-option>
-              <mat-option *ngFor="let i of dataEspecialidades.dataCollection" value="{{i.especialidad}}"> {{ i.especialidad }}</mat-option>
+              <mat-option *ngFor="let i of DB.especialidades" value="{{i.especialidad}}"> {{ i.especialidad }}</mat-option>
             </mat-select>
             @if (controlHasErrors('especialidad')) {
                 <mat-error>{{ getControlErrorMessage('especialidad') }}</mat-error>
