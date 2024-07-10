@@ -32,7 +32,7 @@ import { LoaderService } from '../../services/loader.service';
   styleUrls: ['../form-styles.css', './form-solicitud-turno.component.css']
 })
 
-export class FormSolicitudTurnoComponent implements AfterViewChecked {
+export class FormSolicitudTurnoComponent {
   assetsDir: string = '/assets/img/especialidades/';
   step: number = 1;
   opcionesHorarios!: Horario[];
@@ -54,13 +54,6 @@ export class FormSolicitudTurnoComponent implements AfterViewChecked {
     private loader: LoaderService,
   ) {
 
-  }
-
-  ngAfterViewChecked(): void {
-    if (this.session.isPatientLevelSession()){
-      this.paciente = <Paciente> this.session.data;
-      this.step = 1;
-    }
   }
 
   getSrc(e: string){
@@ -110,6 +103,10 @@ export class FormSolicitudTurnoComponent implements AfterViewChecked {
       this.hora = hora;
       this.step = 5;
     }
+
+    if (this.session.isPatientLevelSession() && this.session.data != null && this.session.data != undefined){
+      this.paciente = <Paciente> this.session.data;
+    }
   }
 
   actualizarFechas(){
@@ -140,10 +137,6 @@ export class FormSolicitudTurnoComponent implements AfterViewChecked {
 
   confirmarTurno(){
       this.loader.setLoading(true);
-  
-      if (this.session.isPatientLevelSession() && this.session.data != null && this.session.data != undefined){
-        this.paciente = <Paciente> this.session.data;
-      }
   
       if (this.paciente && this.especialista && this.especialidad != '' && this.fecha != '' && this.hora != '') {
         let turno = new Turno(

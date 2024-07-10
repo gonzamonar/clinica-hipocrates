@@ -34,6 +34,7 @@ import { TipoComentario } from '../../models/enums/tipo-comentario';
 import { DataComentariosService } from '../../services/data-comentarios.service';
 import { ToDatePipe } from '../../pipes/to-date.pipe';
 import { ToTimePipe } from '../../pipes/to-time.pipe';
+import { HighlightDirective } from '../../directives/highlight.directive';
 
 @Component({
   selector: 'app-card-turno',
@@ -49,7 +50,8 @@ import { ToTimePipe } from '../../pipes/to-time.pipe';
     MatChipsModule,
     ToTitleCasePipe,
     ToDatePipe,
-    ToTimePipe
+    ToTimePipe,
+    HighlightDirective
   ],
   templateUrl: './card-turno.component.html',
   styleUrl: './card-turno.component.css'
@@ -57,6 +59,7 @@ import { ToTimePipe } from '../../pipes/to-time.pipe';
 
 export class CardTurnoComponent implements AfterContentChecked {
   @Input() turno!: Turno;
+  @Input() searchStr: string = '';
   historiaClinica: HistoriaClinica | null = null;
   
   readonly dialog = inject(MatDialog);

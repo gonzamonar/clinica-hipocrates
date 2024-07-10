@@ -22,7 +22,7 @@
                         <div class="flex centered" *ngIf="usuario.esEspecialista()" [style.gap.px]="10">
                             <div class="flex centered">
                                 <p>Especialidades:</p>
-                                <p>{{ renderEspecialidades() }} </p>
+                                <p class="p-especialidades">{{ renderEspecialidades() }} </p>
                             </div>
                             <div *ngIf="especialista" class="flex centered">
                                 <p>Habilitado: {{ especialista.habilitado| renderBooleanField }} </p>

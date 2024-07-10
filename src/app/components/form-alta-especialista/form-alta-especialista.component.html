@@ -5,7 +5,7 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Especialidad</mat-label>
-            <mat-select formControlName="especialidad">
+            <mat-select formControlName="especialidad" multiple>
               <mat-option>-- Sin seleccionar --</mat-option>
               <mat-option *ngFor="let i of DB.especialidades" value="{{i.especialidad}}"> {{ i.especialidad }}</mat-option>
             </mat-select>
@@ -37,7 +37,11 @@
 
     <mat-error *ngIf="failedRegister" [style.margin-bottom.px]="15">{{ registerError }}</mat-error>
     
+    <div class="flex centered" [style.margin-bottom.px]="15">
+        <re-captcha (resolved)="resolved($event)" siteKey="6Ldx5vspAAAAAN9VmxrCCE5_HpIOdWzNjXnyTZPf"></re-captcha>
+    </div>
+
     <div class="flex">
-        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid">{{submitBtnTxt}}</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid || !captchaResponse">{{submitBtnTxt}}</button>
     </div>
 </form>

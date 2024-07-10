@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, Component } from '@angular/core';
 import { DataEspecialidadesService } from '../../services/data-especialidades.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,20 +18,22 @@ import { Especialidad } from '../../models/especialidad';
   templateUrl: './especialidades.component.html',
   styleUrl: './especialidades.component.css'
 })
-export class EspecialidadesComponent {
+export class EspecialidadesComponent implements AfterViewChecked {
   assetsDir: string = '/assets/img/especialidades/';
   dataEspecialidades!: Especialidad[];
 
   constructor (
     private DB: DatabaseService,
     private dataProviderUsuarios: DataUsuariosService
-  ){
-    dataProviderUsuarios.fetchAll().subscribe(
+  ){ }
+  
+  ngAfterViewChecked(): void {
+    this.dataProviderUsuarios.fetchAll().subscribe(
       (res) => {
         if (res){
           let especialidades = Especialista.getEspecialidades(Especialista.filtrarHabilitados(Especialista.constructorArr(res)));
           especialidades = [...new Set(especialidades)];
-          this.dataEspecialidades = DB.especialidades.filter((e: Especialidad) => { return especialidades.includes(e.especialidad) });
+          this.dataEspecialidades = this.DB.especialidades.filter((e: Especialidad) => { return especialidades.includes(e.especialidad) });
         }
     });
   }

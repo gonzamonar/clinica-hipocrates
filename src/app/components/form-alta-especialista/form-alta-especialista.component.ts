@@ -15,6 +15,8 @@ import { Especialista } from '../../models/especialista';
 import { ToTitleCaseDirective } from '../../directives/to-title-case.directive';
 import { NotifierService } from '../../services/notifier.service';
 import { DatabaseService } from '../../services/database.service';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { LoaderService } from '../../services/loader.service';
 
 
 @Component({
@@ -30,7 +32,8 @@ import { DatabaseService } from '../../services/database.service';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    RecaptchaModule
   ],
   templateUrl: './form-alta-especialista.component.html',
   styleUrl: '../form-styles.css'
@@ -46,13 +49,17 @@ export class FormAltaEspecialistaComponent implements OnInit {
   failedRegister: boolean = false;
   registerError: string = "";
 
+  captchaResponse: string | null = null;
+
+
   constructor (
     public formViewer: FormViewerService,
     public dataEspecialidades: DataEspecialidadesService,
     public DB: DatabaseService,
     private providerDataUsuarios: DataUsuariosService,
     private loginService: LoginService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private loader: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -61,8 +68,13 @@ export class FormAltaEspecialistaComponent implements OnInit {
     this.form.addControl('especialidad', especialidad);
     this.form.addControl('nuevaEspecialidad', nuevaEspecialidad);
   }
+  
+  resolved(captchaResponse: any) {
+    this.captchaResponse = captchaResponse;
+  }
 
   OnFormSubmitted() {
+    this.loader.setLoading(true);
     this.failedRegister = false;
     this.registerError = "";
     let userInfo: any = this.form.get('userInfo');
@@ -91,9 +103,14 @@ export class FormAltaEspecialistaComponent implements OnInit {
             this.providerDataUsuarios.pushOneEspecialista(especialista, this.imagenPerfil);
             this.form.reset();
             this.notifier.successfullRegisterNotification();
+            this.loader.setLoading(false);
+          } else {
+            this.loader.setLoading(false);
           }
         }
       )
+    } else {
+      this.loader.setLoading(false);
     }
   }
   
@@ -106,6 +123,7 @@ export class FormAltaEspecialistaComponent implements OnInit {
   }
 
   async agregarEspecialidad() {
+    this.loader.setLoading(true);
     let nuevaEspecialidad = this.form.get('nuevaEspecialidad');
     
     if (nuevaEspecialidad?.valid && nuevaEspecialidad.value != null && nuevaEspecialidad.value != "" && !this.addTriggered) {
@@ -117,7 +135,10 @@ export class FormAltaEspecialistaComponent implements OnInit {
         this.notifier.popUpNotification("La especialidad ya existe.");
       }
       nuevaEspecialidad.reset();
+      this.loader.setLoading(false);
       this.addTriggered = false;
+    } else {
+      this.loader.setLoading(false);
     }
   }
 

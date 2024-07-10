@@ -10,6 +10,8 @@ import { DataUsuariosService } from '../../services/data-usuarios.service';
 import { LoginService } from '../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { NotifierService } from '../../services/notifier.service';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-form-alta-paciente',
@@ -20,7 +22,8 @@ import { NotifierService } from '../../services/notifier.service';
     FormDataUsuarioComponent,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    RecaptchaModule
   ],
   templateUrl: './form-alta-paciente.component.html',
   styleUrl: '../form-styles.css'
@@ -35,13 +38,16 @@ export class FormAltaPacienteComponent implements OnInit {
   imagenPerfilAlt!: File;
   failedRegister: boolean = false;
   registerError: string = "";
+
+  captchaResponse: string | null = null;
   
 
   constructor (
     public formViewer: FormViewerService,
     private providerDataUsuarios: DataUsuariosService,
     private loginService: LoginService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private loader: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +57,12 @@ export class FormAltaPacienteComponent implements OnInit {
     this.form.addControl('imagenPerfilAlt', imagenPerfilAlt);
   }
   
+  resolved(captchaResponse: any) {
+    this.captchaResponse = captchaResponse;
+  }
+
   OnFormSubmitted() {
+    this.loader.setLoading(true);
     this.failedRegister = false;
     this.registerError = "";
     let userInfo: any = this.form.get('userInfo');
@@ -80,9 +91,14 @@ export class FormAltaPacienteComponent implements OnInit {
             this.providerDataUsuarios.pushOnePaciente(paciente, this.imagenPerfil, this.imagenPerfilAlt);
             this.form.reset();
             this.notifier.successfullRegisterNotification();
+            this.loader.setLoading(false);
+          } else {
+            this.loader.setLoading(false);
           }
         }
       )
+    } else {
+      this.loader.setLoading(false);
     }
   }
 

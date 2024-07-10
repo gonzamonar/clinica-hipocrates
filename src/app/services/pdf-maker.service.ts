@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas'; // Todavía no lo usamos
+import html2canvas from 'html2canvas';
 import { LoaderService } from './loader.service';
 
 @Injectable({

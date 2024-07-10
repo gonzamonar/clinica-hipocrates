@@ -18,7 +18,7 @@ import { ToTimePipe } from '../../pipes/to-time.pipe';
     CardTurnoComponent,
     FormsModule,
     MatInputModule,
-    MatIconModule,
+    MatIconModule
   ],
   templateUrl: './listado-turnos.component.html',
   styleUrl: './listado-turnos.component.css'
@@ -33,11 +33,11 @@ export class ListadoTurnosComponent implements AfterContentChecked {
     private session: SessionService,
     private DB: DatabaseService,
     private DatePipe: ToDatePipe,
-    private TimePipe: ToTimePipe,
+    private TimePipe: ToTimePipe
   ){ }
 
   ngAfterContentChecked(): void {
-    this.turnos = this.DB.turnos;
+    this.turnos = Turno.ordenarPorNroTurnoDesc(this.DB.turnos);
     this.filtrarTurnos();
   }
 

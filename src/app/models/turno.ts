@@ -125,6 +125,18 @@ export class Turno {
         ) });
     }
 
+    private toSortDate(){
+        let date: string[] = this.dia.split("/");
+        let day: string = Turno.addZeroes(date[0]);
+        let month: string = Turno.addZeroes(date[1]);
+        let year: string = date[2];
+        return year + "-" + month + "-" + day;
+    }
+
+    private static addZeroes(str: string){
+        return str.length == 1 ? "0" + str : str ;
+    }
+
     static filtrarUno(arr: Turno[], nro_turno: number): Turno {
         return arr.filter((i) => {return i.nro_turno == nro_turno})[0];
     }
@@ -134,7 +146,7 @@ export class Turno {
     }
 
     static ordenarPorFecha(arr: Turno[]){
-        return arr.sort((a, b) => { return a.dia.localeCompare(b.dia) });
+        return arr.sort((a, b) => { return a.toSortDate().localeCompare(b.toSortDate()); });
     }
 
     static ordenarPorEspecialista(arr: Turno[]){
@@ -157,11 +169,11 @@ export class Turno {
         return arr.reduce((total, value) => { return value.dia == dia ? total + 1 : total }, 0);
     }
 
-    static contarPorEstado(arr: Turno[], estado: string){
+    static contarPorEstado(arr: Turno[], estado: Estado){
         return arr.reduce((total, value) => { return value.estado == estado ? total + 1 : total }, 0);
     }
 
-    static contarPorNoEstado(arr: Turno[], estado: string){
+    static contarPorNoEstado(arr: Turno[], estado: Estado){
         return arr.reduce((total, value) => { return value.estado != estado ? total + 1 : total }, 0);
     }
 
@@ -174,7 +186,7 @@ export class Turno {
     }
 
     static filtrarPorFecha(arr: Turno[], diaInicio: string, diaFin: string){
-        return arr.filter((t: Turno) => { return t.dia >= diaInicio && t.dia <= diaFin });
+        return arr.filter((t: Turno) => { return t.toSortDate() >= diaInicio && t.toSortDate() <= diaFin });
     }
 
     static getEspecialidades(arr: Turno[]){

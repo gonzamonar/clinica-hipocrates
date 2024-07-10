@@ -10,7 +10,8 @@ import { LoginService } from '../../services/login.service';
 import { DataUsuariosService } from '../../services/data-usuarios.service';
 import { Admin } from '../../models/admin';
 import { NotifierService } from '../../services/notifier.service';
-import { SessionService } from '../../services/session.service';
+import { LoaderService } from '../../services/loader.service';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 
 @Component({
@@ -23,6 +24,7 @@ import { SessionService } from '../../services/session.service';
     FormDataUsuarioComponent,
     MatFormFieldModule,
     MatButtonModule,
+    RecaptchaModule
   ],
   templateUrl: './form-alta-admin.component.html',
   styleUrl: '../form-styles.css'
@@ -35,16 +37,23 @@ export class FormAltaAdminComponent {
   failedRegister: boolean = false;
   registerError: string = "";
 
+  captchaResponse: string | null = null;
+
   constructor (
     public formViewer: FormViewerService,
     public dataEspecialidades: DataEspecialidadesService,
     private providerDataUsuarios: DataUsuariosService,
     private loginService: LoginService,
     private notifier: NotifierService,
+    private loader: LoaderService
   ) { }
-
+  
+  resolved(captchaResponse: any) {
+    this.captchaResponse = captchaResponse;
+  }
 
   OnFormSubmitted() {
+    this.loader.setLoading(true);
     this.failedRegister = false;
     this.registerError = "";
     let userInfo: any = this.form.get('userInfo');
@@ -71,9 +80,14 @@ export class FormAltaAdminComponent {
             this.providerDataUsuarios.pushOneAdmin(admin, this.imagenPerfil);
             this.form.reset();
             this.notifier.successfullRegisterNotification();
+            this.loader.setLoading(false);
+          } else {
+            this.loader.setLoading(false);
           }
         }
       )
+    } else {
+      this.loader.setLoading(false);
     }
   }
 

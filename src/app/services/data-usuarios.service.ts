@@ -40,6 +40,7 @@ export class DataUsuariosService {
   async pushOneEspecialista(especialista: Especialista, imagenPerfil: File) {
     let dataCollection = collection(this.firestore, this.TABLE);
     let imagenPerfilUrl = await this.uploadFile(imagenPerfil);
+    console.log(especialista);
     
     addDoc(dataCollection, {
       'nombre': especialista.nombre,
@@ -49,7 +50,7 @@ export class DataUsuariosService {
       'email': especialista.email,
       'imagenPerfil': imagenPerfilUrl,
       'nivelUsuario': especialista.nivelUsuario,
-      'especialidad': especialista.especialidad,
+      'especialidad': especialista.especialidad.join(','),
       'habilitado': especialista.habilitado,
     });
   }
