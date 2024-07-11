@@ -7,7 +7,7 @@ export const routes: Routes = [
     {
         path: '',
         component: HomeComponent,
-        data: { animation: 'routeAnimations' }
+        // data: { animation: 'routeAnimations' }
     },
     {
         path: 'login',
