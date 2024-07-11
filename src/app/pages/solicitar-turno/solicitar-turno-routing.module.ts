@@ -5,7 +5,8 @@ import { SolicitarTurnoComponent } from './solicitar-turno.component';
 const routes: Routes = [
   {
     path: '',
-    component: SolicitarTurnoComponent
+    component: SolicitarTurnoComponent,
+    data: { animation: 'routeAnimations' }
   },
 ];
 

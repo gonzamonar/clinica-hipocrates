@@ -5,7 +5,8 @@ import { EspecialidadesComponent } from './especialidades.component';
 const routes: Routes = [
   {
     path: '',
-    component: EspecialidadesComponent
+    component: EspecialidadesComponent,
+    data: { animation: 'routeAnimations' }
   },
 ];
 

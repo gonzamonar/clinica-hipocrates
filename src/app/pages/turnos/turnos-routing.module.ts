@@ -5,7 +5,8 @@ import { TurnosComponent } from './turnos.component';
 const routes: Routes = [
   {
     path: '',
-    component: TurnosComponent
+    component: TurnosComponent,
+    data: { animation: 'routeAnimations' }
   },
 ];
 

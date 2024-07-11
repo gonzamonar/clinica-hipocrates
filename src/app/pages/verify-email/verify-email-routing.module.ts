@@ -5,7 +5,8 @@ import { VerifyEmailComponent } from './verify-email.component';
 const routes: Routes = [
   {
     path: '',
-    component: VerifyEmailComponent
+    component: VerifyEmailComponent,
+    data: { animation: 'fromBelow' }
   },
 ];
 

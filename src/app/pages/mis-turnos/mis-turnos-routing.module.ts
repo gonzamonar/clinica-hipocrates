@@ -5,7 +5,8 @@ import { MisTurnosComponent } from './mis-turnos.component';
 const routes: Routes = [
   {
     path: '',
-    component: MisTurnosComponent
+    component: MisTurnosComponent,
+    data: { animation: 'routeAnimations' }
   },
 ];
 

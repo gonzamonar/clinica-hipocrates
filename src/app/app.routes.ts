@@ -6,7 +6,8 @@ import { isAdminGuard } from './guards/is-admin.guard';
 export const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+        data: { animation: 'routeAnimations' }
     },
     {
         path: 'login',
@@ -25,16 +26,15 @@ export const routes: Routes = [
     },
     {
         path: 'especialidades',
-        loadChildren: ()=> import('./pages/especialidades/especialidades-routing.module').then(m=>m.EspecialidadesRoutingModule)
+        loadChildren: ()=> import('./pages/especialidades/especialidades-routing.module').then(m=>m.EspecialidadesRoutingModule),
     },
     {
         path: 'instalaciones',
-        loadChildren: ()=> import('./pages/instalaciones/instalaciones-routing.module').then(m=>m.InstalacionesRoutingModule)
+        loadChildren: ()=> import('./pages/instalaciones/instalaciones-routing.module').then(m=>m.InstalacionesRoutingModule),
     },
     {
         path: 'usuarios',
         loadChildren: ()=> import('./pages/usuarios/usuarios-routing.module').then(m=>m.UsuariosRoutingModule),
-        // canActivate: [isAdminGuard]
     },
     {
         path: 'mis-pacientes',

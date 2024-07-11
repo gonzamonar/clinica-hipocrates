@@ -5,7 +5,8 @@ import { MiPerfilComponent } from './mi-perfil.component';
 const routes: Routes = [
   {
     path: '',
-    component: MiPerfilComponent
+    component: MiPerfilComponent,
+    data: { animation: 'routeAnimations' }
   },
 ];
 

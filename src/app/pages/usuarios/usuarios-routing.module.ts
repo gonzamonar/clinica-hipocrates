@@ -5,7 +5,8 @@ import { UsuariosComponent } from './usuarios.component';
 const routes: Routes = [
   {
     path: '',
-    component: UsuariosComponent
+    component: UsuariosComponent,
+    data: { animation: 'routeAnimations' }
   },
 ];
 

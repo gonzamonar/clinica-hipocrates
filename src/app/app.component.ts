@@ -3,9 +3,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { SessionService } from './services/session.service';
-import { Router, RouterOutlet } from '@angular/router';
+import { ChildrenOutletContexts, Router, RouterOutlet } from '@angular/router';
 import { DatabaseService } from './services/database.service';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { routeAnimations } from './animations';
 
 @Component({
   selector: 'app-root',
@@ -14,16 +15,20 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     RouterOutlet,
     NavbarComponent,
     FooterComponent,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  animations: [
+    routeAnimations,
+  ]
 })
 
 export class AppComponent {
   activeSessionForbiddenRoutes: string[] = ['/login', '/registro', '/verificar-email'];
 
   constructor(
+    private contexts: ChildrenOutletContexts,
     public auth: Auth,
     public session: SessionService,
     public router: Router,
@@ -41,5 +46,9 @@ export class AppComponent {
         this.session.closeSession();
       }
     });
+  }
+
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
 }

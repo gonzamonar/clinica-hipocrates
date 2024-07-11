@@ -5,7 +5,8 @@ import { EstadisticasComponent } from './estadisticas.component';
 const routes: Routes = [
   {
     path: '',
-    component: EstadisticasComponent
+    component: EstadisticasComponent,
+    data: { animation: 'routeAnimations' },
   },
 ];
 

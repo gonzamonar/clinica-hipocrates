@@ -5,7 +5,8 @@ import { InstalacionesComponent } from './instalaciones.component';
 const routes: Routes = [
   {
     path: '',
-    component: InstalacionesComponent
+    component: InstalacionesComponent,
+    data: { animation: 'routeAnimations' },
   },
 ];
 
