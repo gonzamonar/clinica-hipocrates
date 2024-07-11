@@ -50,7 +50,7 @@
                     <mat-icon>reviews</mat-icon>reseña</button>
             </div>
             <div [matTooltip]="displayTooltipEncuesta(turno.nro_encuesta)" *ngIf="displayShowEncuestaBtn(turno)">
-                <button mat-fab extended color="white" [disabled]="turno.nro_encuesta == null">
+                <button mat-fab extended color="white" [disabled]="turno.nro_encuesta == null" (click)="showEncuesta(turno)">
                     <mat-icon>quiz</mat-icon>encuesta</button>
             </div>
         </div>

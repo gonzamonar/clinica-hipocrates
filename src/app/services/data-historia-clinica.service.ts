@@ -3,6 +3,7 @@ import { Firestore, addDoc, collection, collectionData, getDocs, limit, orderBy,
 import { take } from 'rxjs';
 import { HistoriaClinica } from '../models/historia-clinica';
 import { DataTurnosService } from './data-turnos.service';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,14 @@ export class DataHistoriaClinicaService {
 
   constructor(
     private firestore: Firestore,
-    private providerDataTurnos: DataTurnosService
-    // private notifier: NotifierService
+    private providerDataTurnos: DataTurnosService,
+    private loader: LoaderService,
   ) {
     this.getNextId()
   }
 
   async pushOne(historia: HistoriaClinica): Promise<boolean> {
+    this.loader.setLoading(true);
     let success = false;
     let dataCollection = collection(this.firestore, this.TABLE);
 
@@ -46,6 +48,7 @@ export class DataHistoriaClinicaService {
         this.nextId += 1;
       }
     }
+    this.loader.setLoading(false);
     return success;
   }
 

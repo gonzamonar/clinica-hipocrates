@@ -16,6 +16,8 @@ import { Especialidad } from '../models/especialidad';
 import { DataEspecialidadesService } from './data-especialidades.service';
 import { Horario } from '../models/horario';
 import { DataHorariosService } from './data-horarios.service';
+import { Encuesta } from '../models/encuesta';
+import { DataEncuestasService } from './data-encuestas.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +32,7 @@ export class DatabaseService {
   admins: Admin[] = [];
   turnos: Turno[] = [];
   comentarios: Comentario[] = [];
+  encuestas: Encuesta[] = [];
   historiasClinicas: HistoriaClinica[] = [];
 
   constructor(
@@ -38,6 +41,7 @@ export class DatabaseService {
     private providerDataHistoriaClinica: DataHistoriaClinicaService,
     private providerDataComentarios: DataComentariosService,
     private providerDataEspecialidades: DataEspecialidadesService,
+    private providerDataEncuestas: DataEncuestasService,
     private ExcelService: ExcelService,
     private notifier: NotifierService
   ) {
@@ -70,6 +74,11 @@ export class DatabaseService {
       (res) => {
         this.comentarios = Comentario.constructorArr(res);
     });
+
+    this.providerDataEncuestas.fetchAll().subscribe(
+      (res) => {
+        this.encuestas = Encuesta.constructorArr(res);
+    });
   }
 
   descargarExcelUsuarios(){
@@ -100,6 +109,7 @@ export class DatabaseService {
         delete t2.nro_encuesta;
         delete t2.calificacion;
         delete t2.nro_historia_clinica;
+        
         data.push(t2);
       })
   

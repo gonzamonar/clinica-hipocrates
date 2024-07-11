@@ -35,6 +35,10 @@ import { DataComentariosService } from '../../services/data-comentarios.service'
 import { ToDatePipe } from '../../pipes/to-date.pipe';
 import { ToTimePipe } from '../../pipes/to-time.pipe';
 import { HighlightDirective } from '../../directives/highlight.directive';
+import { DialogCargarEncuestaComponent } from '../modals/dialog-cargar-encuesta/dialog-cargar-encuesta.component';
+import { Encuesta } from '../../models/encuesta';
+import { DataEncuestasService } from '../../services/data-encuestas.service';
+import { DialogMostrarEncuestaComponent } from '../modals/dialog-mostrar-encuesta/dialog-mostrar-encuesta.component';
 
 @Component({
   selector: 'app-card-turno',
@@ -71,6 +75,7 @@ export class CardTurnoComponent implements AfterContentChecked {
     private providerDataTurnos: DataTurnosService,
     private providerDataHistoriaClinica: DataHistoriaClinicaService,
     private providerDataComentarios: DataComentariosService,
+    private providerDataEncuestas: DataEncuestasService,
     private DB: DatabaseService
   ){ }
 
@@ -157,7 +162,7 @@ export class CardTurnoComponent implements AfterContentChecked {
   }
 
   displayCompleteQuizBtn(turno: Turno): boolean {
-    return (this.session.isPatientLevelSession() && turno.nro_review != null && turno.estado == Estado.Realizado);
+    return (this.session.isPatientLevelSession() && turno.nro_review != null && turno.nro_encuesta == null && turno.estado == Estado.Realizado);
   }
 
   displayCalificationBtn(turno: Turno): boolean {
@@ -208,6 +213,15 @@ export class CardTurnoComponent implements AfterContentChecked {
           motivo: review.motivo,
           comentario: review.comentario,
         }}
+      );
+    }
+  }
+
+  showEncuesta(turno: Turno){
+    if (turno.nro_encuesta != null){
+      let encuesta = turno.Encuesta();
+      this.dialog.open(DialogMostrarEncuestaComponent,
+        { data : encuesta }
       );
     }
   }
@@ -328,7 +342,29 @@ export class CardTurnoComponent implements AfterContentChecked {
   }
 
   actionCompleteQuizBtn(turno: Turno) {
+    const dialogRef = this.dialog.open(DialogCargarEncuestaComponent);
 
+    dialogRef.afterClosed()
+    .pipe(take(1))
+    .subscribe((response) => {
+      if (response){
+
+        let encuesta = new Encuesta(
+          0,
+          turno.nro_turno,
+          response.rating_pagina,
+          response.comentario_pagina,
+          response.rating_especialista,
+          response.comentario_especialista,
+          response.rating_turno,
+          response.comentario_turno,
+        )
+        
+        if (encuesta){
+          this.providerDataEncuestas.pushOne(encuesta);
+        }
+      }
+    });
   }
 
   actionUpdateClinicHistoryBtn(turno: Turno) {

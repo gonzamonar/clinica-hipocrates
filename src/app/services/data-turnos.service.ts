@@ -6,6 +6,7 @@ import { NotifierService } from './notifier.service';
 import { Estado } from '../models/enums/estado';
 import { Comentario } from '../models/comentario';
 import { DataComentariosService } from './data-comentarios.service';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,14 @@ export class DataTurnosService {
 
   constructor(
     private firestore: Firestore,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private loader: LoaderService,
   ) {
     this.getNextId()
   }
 
   async pushOne(turno: Turno): Promise<boolean> {
+    this.loader.setLoading(true);
     let success = false;
     let dataCollection = collection(this.firestore, this.TABLE);
 
@@ -46,7 +49,7 @@ export class DataTurnosService {
         this.nextId += 1;
       }
     }
-
+    this.loader.setLoading(false);
     return success;
   }
 
@@ -72,6 +75,7 @@ export class DataTurnosService {
   }
 
   private async updateStatus(turno: Turno, estado: string): Promise<void> {
+    this.loader.setLoading(true);
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -87,9 +91,11 @@ export class DataTurnosService {
       
       this.notifier.popUpNotification("Estado del turno actualizado exitosamente.")
     });
+    this.loader.setLoading(false);
   }
 
   private async updateCalificacionTurno(turno: Turno): Promise<void> {
+    this.loader.setLoading(true);
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -103,9 +109,11 @@ export class DataTurnosService {
         'calificacion': turno.calificacion,
       });
     });
+    this.loader.setLoading(false);
   }
 
   public async updateTurnoNroEncuesta(nro_turno: number, nro_encuesta: number): Promise<void> {
+    this.loader.setLoading(true);
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -119,9 +127,11 @@ export class DataTurnosService {
         'nro_encuesta': nro_encuesta,
       });
     });
+    this.loader.setLoading(false);
   }
 
   public async updateTurnoNroComentario(nro_turno: number, nro_comentario: number): Promise<void> {
+    this.loader.setLoading(true);
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -135,9 +145,11 @@ export class DataTurnosService {
         'nro_comentario': nro_comentario,
       });
     });
+    this.loader.setLoading(false);
   }
 
   public async updateTurnoNroReview(nro_turno: number, nro_review: number): Promise<void> {
+    this.loader.setLoading(true);
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -151,9 +163,11 @@ export class DataTurnosService {
         'nro_review': nro_review,
       });
     });
+    this.loader.setLoading(false);
   }
 
   public async updateTurnoNroHistoriaClinica(nro_turno: number, nro_historia_clinica: number): Promise<void> {
+    this.loader.setLoading(true);
     let col = collection(this.firestore, this.TABLE);
     const fetchQuery = query(
       col, 
@@ -167,6 +181,7 @@ export class DataTurnosService {
         'nro_historia_clinica': nro_historia_clinica,
       });
     });
+    this.loader.setLoading(false);
   }
 
   fetchAll(){

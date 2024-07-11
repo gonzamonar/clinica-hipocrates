@@ -4,6 +4,7 @@ import { Paciente } from "./paciente";
 import { DatabaseService } from "../services/database.service";
 import { HistoriaClinica } from "./historia-clinica";
 import { Comentario } from "./comentario";
+import { Encuesta } from "./encuesta";
 
 export class Turno {
     nro_turno: number;
@@ -67,13 +68,21 @@ export class Turno {
     }
     
     Comentario(): Comentario | null {
-        const DB = DatabaseService.instance;
         let comentario: Comentario | null = null;
         if (this.nro_comentario != null) {
             const DB = DatabaseService.instance;
             comentario = Comentario.filtrarUno(DB.comentarios, this.nro_comentario);
         }
         return comentario;
+    }
+    
+    Encuesta(): Encuesta | null {
+        let encuesta: Encuesta | null = null;
+        if (this.nro_encuesta != null) {
+            const DB = DatabaseService.instance;
+            encuesta = Encuesta.filtrarUno(DB.encuestas, this.nro_encuesta);
+        }
+        return encuesta;
     }
 
     HistoriaClinica(): HistoriaClinica | null {
