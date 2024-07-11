@@ -54,7 +54,7 @@ Este proyecto utiliza:
 | ![imagen](/readme/public/home.png) | ![imagen](/readme/public/login.png) | ![imagen](/readme/public/verificar-email.png) |
 
 |       Registro            |       Registro (Form Especialista)            |        Registro (Form Especialista)            | 
-|----------------------------------|----------------------------------|
+|----------------------------------|----------------------------------|----------------------------------|
 | ![imagen](/readme/public/registro.png) | ![imagen](/readme/public/registro-especialista.png) | ![imagen](/readme/public/registro-especialista.png) |
 
 |             Instalaciones             |             Especialidades              |
