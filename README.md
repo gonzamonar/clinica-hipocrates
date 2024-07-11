@@ -1,5 +1,6 @@
 # Clínica Hipócrates
 ### Angular Web App: [clinica-hipocrates.web.app](https://clinica-hipocrates.web.app)
+![imagen](/readme/public/home.png)
 
 # Versionado
 Este proyecto utiliza:
@@ -19,7 +20,7 @@ Este proyecto utiliza:
 | Admin | Que otro admin cree una cuenta en `/usuarios` `Tab - Alta de Usuarios`, verificar el email e iniciar sesión. |
 
 # Rutas
-![Navbar de la página](/readme/navbar-img.png)
+![imagen](/readme/navbar-img.png)
 
 | Endpoint | Descripción | Permisos de Usuario |
 | ------ | ------ | ------ |
@@ -40,3 +41,37 @@ Este proyecto utiliza:
 | `/mi-perfil` |  `Tab - Mi Perfil`: Página con los datos y foto del usuario.  | Admin, Paciente, Especialista |
 | | `Tab - Mis Horarios`: Página con el selector de horarios semanales del Especialista.  | Especialista |
 
+
+# Galería
+
+## Páginas Públicas
+
+|             Inicio              |              Login              |              Registro           |
+|:-------------------------------:|:-------------------------------:|:-------------------------------:|
+| ![imagen](/readme/public/home.png) | ![imagen](/readme/public/login.png) | ![imagen](/readme/public/registro.png) |
+
+|       Registro (Form Paciente)            |       Registro (Form Especialista)            | 
+|----------------------------------|----------------------------------|
+| ![imagen](/readme/public/registro-paciente.png) | ![imagen](/readme/public/registro-especialista.png) |
+
+|             Instalaciones             |             Especialidades              |
+|:----------------------------------------------------:|:---------------------------------------------:|
+| ![imagen](/readme/public/instalaciones.png) | ![imagen](/readme/public/especialidades.png) |
+
+## Páginas de Admin
+
+
+
+
+
+
+<!-- 
+|             Inicio              |              Login              |              Registro           |
+|:-------------------------------:|:-------------------------------:|:-------------------------------:|
+| ![imagen](/readme) | ![imagen](/readme) | ![imagen](/readme) |
+
+
+| Automatically saves PKHeX .pk3 file | HTTP API                           |
+|-------------------------------------|------------------------------------|
+| ![imagen](/readme) | ![imagen](/readme) |
+-->
