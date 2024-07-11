@@ -32,14 +32,16 @@ Este proyecto utiliza:
 | `/verificar-email` | Form para reenviar el correo de verificación | Anónimo |
 | `/usuarios` | `Tab - Listado de Usuarios`: Muestra una tabla con todos los usuarios existentes.  | Admin |
 | | `Tab - Alta de Usuarios`: Form para registrar usuarios de tipo Paciente, Especialista y Admin.  | Admin |
+| | `Tab - Historias Clínicas`: Listado con las historias clínicas de todos los pacientes.  | Admin |
 | `/turnos` | Listado con todos los turnos de la Clínica. | Admin |
-| `/estadisticas` | `Tab - Estadísticas`: Página con estadísticas de los turnos de la clínica. | Admin |
+| `/estadisticas` | `Tab - Estadísticas`: Página con estadísticas de los turnos de la clínica con subtabs: por especialidad, por día, turnos solicitados y turnos finalizados. | Admin |
 | | `Tab - Logs de Usuarios`: Listado con todos los inicios de sesión a la página.  | Admin |
 | `/solicitar-turno` | Form para solicitar un turno para sí mismo (Paciente) o para cualquier Paciente (Admin). | Admin, Paciente |
+| `/mis-pacientes` | Listado los pacientes que fueron atendidos por el Especialista y el acceso a la historia clínica de cada uno. | Especialista |
 | `/mis-turnos` | Listado con los turnos sacados por el Paciente / con el Especialista. | Paciente, Especialista |
-| `/mis-pacientes` | Listado con la historia clínica de los pacientes que fueron atendidos por el Especialista. | Especialista |
 | `/mi-perfil` |  `Tab - Mi Perfil`: Página con los datos y foto del usuario.  | Admin, Paciente, Especialista |
 | | `Tab - Mis Horarios`: Página con el selector de horarios semanales del Especialista.  | Especialista |
+| | `Tab - Historia Clínica`: Página con la historia clínica del Paciente y el acceso para descargarla en pdf.  | Paciente |
 
 
 # Galería
@@ -47,13 +49,13 @@ Este proyecto utiliza:
 ## Páginas Públicas
 ![imagen](/readme/public/navbar.png)
 
-|             Inicio              |              Login              |              Registro           |
+|             Inicio              |              Login              |              Verificar Email           |
 |:-------------------------------:|:-------------------------------:|:-------------------------------:|
-| ![imagen](/readme/public/home.png) | ![imagen](/readme/public/login.png) | ![imagen](/readme/public/registro.png) |
+| ![imagen](/readme/public/home.png) | ![imagen](/readme/public/login.png) | ![imagen](/readme/public/verificar-email.png) |
 
-|       Registro (Form Paciente)            |       Registro (Form Especialista)            | 
+|       Registro            |       Registro (Form Especialista)            |        Registro (Form Especialista)            | 
 |----------------------------------|----------------------------------|
-| ![imagen](/readme/public/registro-paciente.png) | ![imagen](/readme/public/registro-especialista.png) |
+| ![imagen](/readme/public/registro.png) | ![imagen](/readme/public/registro-especialista.png) | ![imagen](/readme/public/registro-especialista.png) |
 
 |             Instalaciones             |             Especialidades              |
 |:----------------------------------------------------:|:---------------------------------------------:|
