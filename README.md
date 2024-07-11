@@ -58,20 +58,58 @@ Este proyecto utiliza:
 |:----------------------------------------------------:|:---------------------------------------------:|
 | ![imagen](/readme/public/instalaciones.png) | ![imagen](/readme/public/especialidades.png) |
 
+
+## Páginas de Paciente
+![imagen](/readme/paciente/navbar.png)
+
+#### Mis Turnos / Solicitar Turno
+|             Mis Turnos             |             Solicitar Turno              |
+|:----------------------------------------------------:|:---------------------------------------------:|
+| ![imagen](/readme/paciente/mis-turnos.png) | ![imagen](/readme/paciente/solicitar-turno.png) |
+
+#### Perfil
+|             Tab Mi Perfil              |              Tab Historia Clínica              |
+|:-------------------------------:|:-------------------------------:|
+| ![imagen](/readme/paciente/mi-perfil.png) | ![imagen](/readme/paciente/historia-clinica.png) |
+
+|   Descargar Historia Clínica    |
+|:------------------:|
+| ![imagen](/readme/paciente/descargar-historia-clinica.png) |
+
+
+## Páginas de Especialista
+![imagen](/readme/especialista/navbar.png)
+
+#### Mis Pacientes / Mis Turnos
+|             Mis Pacientes              |             Mis Turnos             |
+|:----------------------------------------------------:|:---------------------------------------------:|
+| ![imagen](/readme/especialista/mispacientes.png) | ![imagen](/readme/especialista/mis-turnos.png) |
+
+
+#### Perfil
+|             Tab Mi Perfil              |              Tab Mis Horarios              |
+|:-------------------------------:|:-------------------------------:|
+| ![imagen](/readme/especialista/mi-perfil.png) | ![imagen](/readme/especialista/perfil-horarios.png) |
+
+
 ## Páginas de Admin
+![imagen](/readme/admin/navbar.png)
 
-
-
-
-
-
-<!-- 
-|             Inicio              |              Login              |              Registro           |
+#### Usuarios
+|             Tab Listado de Usuarios              |              Tab Alta de Usuarios              |              Tab Historia Clínica           |
 |:-------------------------------:|:-------------------------------:|:-------------------------------:|
-| ![imagen](/readme) | ![imagen](/readme) | ![imagen](/readme) |
+| ![imagen](/readme/admin/usuarios--lista-usuarios.png) | ![imagen](/readme/admin/usuarios--alta-usuarios.png) | ![imagen](/readme/admin/usuarios--historia-clinica.png) |
 
+#### Turnos
+|   Turnos    |
+|:------------------:|
+| ![imagen](/readme/admin/turnos.png) |
 
-| Automatically saves PKHeX .pk3 file | HTTP API                           |
-|-------------------------------------|------------------------------------|
-| ![imagen](/readme) | ![imagen](/readme) |
--->
+#### Estadísticas
+|      Tab Estadísticas -- por Especialidad              |              Tab Estadísticas -- por Día              |              Tab Estadísticas -- Solicitados           |
+|:-------------------------------:|:-------------------------------:|:-------------------------------:|
+| ![imagen](/readme/admin/estadisticas-especialidad.png) | ![imagen](/readme/admin/estadisticas-dia.png) | ![imagen](/readme/admin/estadisticas-solicitados.png) |
+
+|             Tab Estadísticas -- Finalizados              |              Tab Logs              |
+|:-------------------------------:|:-------------------------------:|
+| ![imagen](/readme/admin/estadisticas-finalizados.png) | ![imagen](/readme/admin/estadisticas-logs.png) |
