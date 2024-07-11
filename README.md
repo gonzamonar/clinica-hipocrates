@@ -45,6 +45,7 @@ Este proyecto utiliza:
 # Galería
 
 ## Páginas Públicas
+![imagen](/readme/public/navbar.png)
 
 |             Inicio              |              Login              |              Registro           |
 |:-------------------------------:|:-------------------------------:|:-------------------------------:|
