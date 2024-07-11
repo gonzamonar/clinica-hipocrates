@@ -12,11 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DataHistoriaClinicaService } from '../../services/data-historia-clinica.service';
 import { SessionService } from '../../services/session.service';
 import { HistoriaClinica } from '../../models/historia-clinica';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas'; // Todavía no lo usamos
-import { Comentario } from '../../models/comentario';
 import { DatabaseService } from '../../services/database.service';
-import { DialogComentarioTurnoComponent } from '../modals/dialog-comentario-turno/dialog-comentario-turno.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PdfHistoriaClinicaComponent } from '../pdf-historia-clinica/pdf-historia-clinica.component';
 import { Paciente } from '../../models/paciente';

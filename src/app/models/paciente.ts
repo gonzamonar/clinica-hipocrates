@@ -30,4 +30,8 @@ export class Paciente extends Usuario {
     static override filtrarUno(arr: Paciente[], email: string): Paciente {
         return arr.filter((i) => {return i.email == email})[0];
     }
+
+    static filtrarPorEmails(arr: Paciente[], emails: string[]): Paciente[] {
+        return arr.filter((e: Paciente) => {return emails.includes(e.email)});
+    }
 }

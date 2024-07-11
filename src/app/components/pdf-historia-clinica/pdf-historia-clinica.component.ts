@@ -47,7 +47,7 @@ export class PdfHistoriaClinicaComponent {
   @ViewChild('pdfData') pdfData!: ElementRef;
 
   public downloadPDF(): void {
-    this.pdf.createPDF(this.pdfData.nativeElement, 'mi_historia_clinica')
+    this.pdf.createPDF(this.pdfData.nativeElement, 'historia_clinica_' + this.data.paciente.fullName())
     .then(
       () => {
         this.dialogRef.close();

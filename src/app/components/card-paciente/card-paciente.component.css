@@ -5,7 +5,7 @@
     gap: 10px;
 }
 
-.card-turno {
+.card-paciente {
     width: 100%;
     max-width: 700px;
     background-color: white;
@@ -55,7 +55,6 @@ p {
     margin: 0px;
 }
 
-
 .logo {
     width: 100px;
     height: auto;
@@ -70,9 +69,4 @@ p {
     max-width: 150px;
     height: auto;
     padding: 5px 0;
-}
-
-.p-especialidades {
-    max-width: 150px;
-    text-align: center;
 }
